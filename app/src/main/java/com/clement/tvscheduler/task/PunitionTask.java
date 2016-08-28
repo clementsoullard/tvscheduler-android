@@ -34,11 +34,8 @@ public class PunitionTask extends AsyncTask<Integer, Integer, Long> {
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-
-
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL("http://192.168.1.20/tvscheduler/punition" + params[0]).openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL("http://192.168.1.20/tvscheduler/punition").openConnection();
             urlConnection.setRequestMethod("POST");
-            urlConnection.getContent();
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
@@ -53,7 +50,7 @@ public class PunitionTask extends AsyncTask<Integer, Integer, Long> {
 
             JSONObject root = new JSONObject();
            try {
-               root.put("value", new Integer(-20));
+               root.put("value", new Integer(params[0]));
                root.put("advertisementId", "desobeissance");
 
                String str = root.toString();

@@ -9,57 +9,74 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="tvscheduler.clement.com.tvscheduler.MainActivity"
+    tools:context="com.clement.tvscheduler.MainActivity"
     tools:showIn="@layout/activity_main">
-    <LinearLayout
+
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical">
+           android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
     <Button
         android:id="@+id/button_on"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ON" />
+        android:text="ON"
+        android:backgroundTint="@color/abc_search_url_text" />
 
     <Button
         android:id="@+id/button_off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OFF" />
+        android:text="OFF"
+        android:backgroundTint="@color/abc_btn_colored_borderless_text_material" />
 
     <Button
         android:id="@+id/button_30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="30 Mn" />
-    <Button
-        android:id="@+id/button_60"
-        android:layout_width="wrap_content"
+        android:text="30 Mn"
+        android:backgroundTint="@color/abc_search_url_text" />
+        <Button
+            android:id="@+id/button_60"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60 Mn"
+            android:backgroundTint="@color/abc_search_url_text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="60 Mn" />
+        android:orientation="horizontal">
+
 
         <Button
             android:id="@+id/button_punition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Punition" />
+            android:text="Punition"
+            android:backgroundTint="@color/abc_btn_colored_borderless_text_material" />
 
         <Button
             android:id="@+id/button_prive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prive de Télé" />
+            android:text="Prive de Télé"
+            android:backgroundTint="@color/abc_btn_colored_borderless_text_material" />
 
         <Button
             android:id="@+id/button_recompense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Récompense" />
-
+            android:text="Récompense"
+            android:backgroundTint="@color/abc_search_url_text" />
+</LinearLayout>
 
         <TextView
         android:layout_width="wrap_content"
@@ -74,5 +91,5 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/relayStatus_view" />
-    </LinearLayout>
+</LinearLayout>
 </RelativeLayout>

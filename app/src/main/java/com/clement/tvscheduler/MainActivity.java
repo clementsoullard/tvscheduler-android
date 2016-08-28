@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clement.tvscheduler.task.CreditTask;
+import com.clement.tvscheduler.task.PunitionTask;
 import com.clement.tvscheduler.task.TVStatusTask;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private Button tvOn;
     private Button tvOff;
     private Button tvCredit30;
+    private Button punition;
+    private Button prive;
+    private Button recompense;
     private Button tvCredit60;
     private TextView remainingTimeView;
     private TextView relayStatusView;
@@ -43,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         tvOff = (Button) findViewById(R.id.button_off);
         tvCredit30 = (Button) findViewById(R.id.button_30);
         tvCredit60 = (Button) findViewById(R.id.button_60);
+        punition=(Button) findViewById(R.id.button_punition);
+        prive=(Button) findViewById(R.id.button_prive);
+        recompense=(Button) findViewById(R.id.button_recompense);
         remainingTimeView = (TextView) findViewById(R.id.remainingTime_view);
         relayStatusView = (TextView) findViewById(R.id.relayStatus_view);
 
@@ -76,6 +83,31 @@ public class MainActivity extends AppCompatActivity {
                 CreditTask creditTask = new CreditTask(MainActivity.this);
                 Log.i(TAG, "Click sur TV 60");
                 creditTask.execute(3600);
+            }
+        });
+        punition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PunitionTask puntionTask = new PunitionTask(MainActivity.this);
+                Log.i(TAG, "Click sur punition");
+                puntionTask.execute(-20);
+            }
+        });
+        prive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PunitionTask puntionTask = new PunitionTask(MainActivity.this);
+                Log.i(TAG, "Click sur punition");
+                puntionTask.execute(-1000);
+            }
+        });
+
+        recompense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PunitionTask puntionTask = new PunitionTask(MainActivity.this);
+                Log.i(TAG, "Click sur punition");
+                puntionTask.execute(20);
             }
         });
 
