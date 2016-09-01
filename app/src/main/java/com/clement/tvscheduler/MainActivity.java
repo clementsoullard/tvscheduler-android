@@ -21,6 +21,8 @@ import com.clement.tvscheduler.task.CreditTask;
 import com.clement.tvscheduler.task.PunitionTask;
 import com.clement.tvscheduler.task.TVStatusTask;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends FragmentActivity {
 
     public final static String TAG = "MainActivity";
@@ -42,6 +44,8 @@ public class MainActivity extends FragmentActivity {
     private TextView remainingTimeView;
 
     private TextView relayStatusView;
+
+    DecimalFormat df=new DecimalFormat("##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,8 +181,21 @@ public class MainActivity extends FragmentActivity {
      * This creates a dialog to enter the pin
      */
     public void enterPin() {
-        android.support.v4.app.DialogFragment newFragment = new PinDialog();
+        Double d=Math.ceil(Math.random()*100);
+        int random=d.intValue();
+        String midPin=df.format(random);
+        PinDialog newFragment = new PinDialog();
+        newFragment.setMidPin(midPin);
         FragmentManager fm=getSupportFragmentManager();
         newFragment.show(fm,"pin");
+    }
+
+    public void checkPin(String midPin,String valueEntered) {
+        String expectedResult="1"+midPin+"1";
+        if(expectedResult.equals(valueEntered)){
+            Log.i(TAG, "La bonne valeur a ete entree");
+        }else{
+            Log.i(TAG, "La mauvaise valeur a ete entree");
+        }
     }
 }

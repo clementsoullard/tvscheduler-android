@@ -52,7 +52,9 @@ public class TVStatusTask extends AsyncTask<Integer, Integer, Long> {
     @Override
     protected void onPostExecute(Long aLong) {
         mainActivity.credited(messageRetour);
-        mainActivity.setTimeRemaining(tvStatus.getRemainingTime());
+        if(tvStatus!=null) {
+            mainActivity.setTimeRemaining(tvStatus.getRemainingTime());
+        }
         if(tvStatus.getStatusRelay()) {
             mainActivity.setRelayStatus("Tele autorisée");
         }else{
