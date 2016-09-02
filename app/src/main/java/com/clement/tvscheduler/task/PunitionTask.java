@@ -27,14 +27,18 @@ public class PunitionTask extends AsyncTask<Integer, Integer, Long> {
 
     private String messageRetour;
 
-    public PunitionTask(MainActivity mainActivity) {
+    private String baserUrl;
+
+
+    public PunitionTask(MainActivity mainActivity,String baseUrl) {
         this.mainActivity = mainActivity;
+        this.baserUrl=baseUrl;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL("http://192.168.1.20/tvscheduler/punition").openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL(baserUrl+"tvscheduler/punition").openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -19,10 +20,17 @@ import com.clement.tvscheduler.R;
 
 public class PinDialog extends android.support.v4.app.DialogFragment {
 
-private String midPin;
+    private String midPin;
+
+    private AsyncTask asyncTask;
+
 
     public void setMidPin(String midPin) {
         this.midPin = midPin;
+    }
+
+    public void setAsyncTask(AsyncTask asyncTask) {
+        this.asyncTask = asyncTask;
     }
 
     @Nullable
@@ -43,7 +51,6 @@ private String midPin;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
-
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         View v=inflater.inflate(R.layout.dialog_pin, null);
@@ -54,7 +61,8 @@ private String midPin;
                 .setPositiveButton(R.string.pin, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                      MainActivity mainActivity=(MainActivity) getActivity();
-                        mainActivity.checkPin(midPin,et.getText().toString());// FIRE ZE MISSILES!
+                        mainActivity.checkPin(midPin,et.getText().toString(),asyncTask);
+
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

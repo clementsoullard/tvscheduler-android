@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +27,9 @@ import java.text.DecimalFormat;
 public class MainActivity extends FragmentActivity {
 
     public final static String TAG = "MainActivity";
+    public static final String HTTP_RESEAU_LOCAL = "http://192.168.1.20/";
+
+    public static final String HTTP_RESEAU_INET = "http://www.cesarsuperstar.com/";
 
     private Button tvOn;
 
@@ -72,7 +76,6 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Click sur TV ON");
-                enterPin();
                 requestServerCredit(-2);
 
             }
@@ -148,13 +151,22 @@ public class MainActivity extends FragmentActivity {
      * @param credit
      */
     void requestServerCredit(int credit) {
-        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (mWifi.isConnected()) {
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+              int netType = info.getType();
+
+        if (netType == ConnectivityManager.TYPE_WIFI) {
             Log.i(TAG, "Network is ok");
-            CreditTask creditTask = new CreditTask(MainActivity.this);
-            creditTask.execute(credit);
-        } else {
+            CreditTask creditTask = new CreditTask(MainActivity.this,HTTP_RESEAU_LOCAL);
+            enterPin(creditTask);
+        }
+
+        else if(netType == ConnectivityManager.TYPE_MOBILE) {
+            CreditTask creditTask = new CreditTask(MainActivity.this,HTTP_RESEAU_INET);
+            enterPin(creditTask);
+
+            Toast toast = Toast.makeText(this, "Pas de reseau", Toast.LENGTH_LONG);
+            toast.show();
             Log.i(TAG, "There is no network doing nothing");
         }
     }
@@ -169,9 +181,12 @@ public class MainActivity extends FragmentActivity {
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (mWifi.isConnected()) {
             Log.i(TAG, "Network is ok");
-            PunitionTask puntionTask = new PunitionTask(MainActivity.this);
-            puntionTask.execute(punition);
+            PunitionTask puntionTask = new PunitionTask(MainActivity.this, HTTP_RESEAU_LOCAL);
+             enterPin(puntionTask);
+
         } else {
+            PunitionTask puntionTask = new PunitionTask(MainActivity.this, HTTP_RESEAU_INET);
+            enterPin(puntionTask);
             Log.i(TAG, "There is no network doing nothing");
         }
 
@@ -180,20 +195,22 @@ public class MainActivity extends FragmentActivity {
     /**
      * This creates a dialog to enter the pin
      */
-    public void enterPin() {
+    public void enterPin(AsyncTask asyncTask) {
         Double d=Math.ceil(Math.random()*100);
         int random=d.intValue();
         String midPin=df.format(random);
         PinDialog newFragment = new PinDialog();
         newFragment.setMidPin(midPin);
+        newFragment.setAsyncTask(asyncTask);
         FragmentManager fm=getSupportFragmentManager();
         newFragment.show(fm,"pin");
     }
 
-    public void checkPin(String midPin,String valueEntered) {
+    public void checkPin(String midPin,String valueEntered,AsyncTask asyncTask) {
         String expectedResult="1"+midPin+"1";
         if(expectedResult.equals(valueEntered)){
             Log.i(TAG, "La bonne valeur a ete entree");
+            asyncTask.execute();
         }else{
             Log.i(TAG, "La mauvaise valeur a ete entree");
         }
