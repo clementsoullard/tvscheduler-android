@@ -1,7 +1,6 @@
 package com.clement.tvscheduler.task;
 
 import android.content.ContentValues;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.clement.tvscheduler.MainActivity;
@@ -20,25 +19,23 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * Created by Clément on 09/07/2016.
  */
-public class PunitionTask extends AsyncTask<Integer, Integer, Long> {
+public class PunitionTask extends BaseTask {
 
-
-    private MainActivity mainActivity;
 
     private String messageRetour;
 
     private String baserUrl;
 
 
-    public PunitionTask(MainActivity mainActivity,String baseUrl) {
-        this.mainActivity = mainActivity;
-        this.baserUrl=baseUrl;
+    public PunitionTask(MainActivity mainActivity, String baseUrl) {
+        super(mainActivity);
+        this.baserUrl = baseUrl;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(baserUrl+"tvscheduler/punition").openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL(baserUrl + "tvscheduler/punition").openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -53,18 +50,18 @@ public class PunitionTask extends AsyncTask<Integer, Integer, Long> {
 
 
             JSONObject root = new JSONObject();
-           try {
-               root.put("value", new Integer(params[0]));
-               root.put("advertisementId", "desobeissance");
+            try {
+                root.put("value", new Integer(params[0]));
+                root.put("advertisementId", "desobeissance");
 
-               String str = root.toString();
-               byte[] outputBytes = str.getBytes("UTF-8");
-               OutputStream os = urlConnection.getOutputStream();
-               os.write(outputBytes);
-           }catch(Exception e){
-               Log.e(ContentValues.TAG,e.getMessage());
-           }
-            messageRetour="Succès";
+                String str = root.toString();
+                byte[] outputBytes = str.getBytes("UTF-8");
+                OutputStream os = urlConnection.getOutputStream();
+                os.write(outputBytes);
+            } catch (Exception e) {
+                Log.e(ContentValues.TAG, e.getMessage());
+            }
+            messageRetour = "Succès";
 
             int responseCode = urlConnection.getResponseCode();
 
@@ -87,7 +84,7 @@ public class PunitionTask extends AsyncTask<Integer, Integer, Long> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        messageRetour="Service non disponible";
+        messageRetour = "Service non disponible";
         return null;
     }
 

@@ -25,28 +25,28 @@
         android:id="@+id/button_on"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ON"
-        android:backgroundTint="@color/abc_search_url_text" />
+        android:backgroundTint="@color/abc_search_url_text"
+        android:text="ON" />
 
     <Button
         android:id="@+id/button_off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OFF"
-        android:backgroundTint="@color/abc_btn_colored_borderless_text_material" />
+        android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
+        android:text="OFF" />
 
     <Button
         android:id="@+id/button_30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="30 Mn"
-        android:backgroundTint="@color/abc_search_url_text" />
+        android:backgroundTint="@color/abc_search_url_text"
+        android:text="30 Mn" />
         <Button
             android:id="@+id/button_60"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="60 Mn"
-            android:backgroundTint="@color/abc_search_url_text" />
+            android:backgroundTint="@color/abc_search_url_text"
+            android:text="60 Mn" />
 
     </LinearLayout>
 
@@ -60,36 +60,43 @@
             android:id="@+id/button_punition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Punition"
-            android:backgroundTint="@color/abc_btn_colored_borderless_text_material" />
+            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
+            android:text="Punition" />
 
         <Button
             android:id="@+id/button_prive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prive de Télé"
-            android:backgroundTint="@color/abc_btn_colored_borderless_text_material" />
+            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
+            android:text="Prive de Télé" />
 
         <Button
             android:id="@+id/button_recompense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Récompense"
-            android:backgroundTint="@color/abc_search_url_text" />
+            android:backgroundTint="@color/abc_search_url_text"
+            android:text="Récompense" />
 </LinearLayout>
 
         <TextView
+            android:id="@+id/remainingTime_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/remainingTime_view" />
+            android:text="remainingTime"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/relayStatus_view" />
+            <TextView
+                android:id="@+id/relayStatus_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="relayStatus"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/nextCredit_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="nextCredit"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 </LinearLayout>
 </RelativeLayout>

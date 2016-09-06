@@ -1,6 +1,5 @@
 package com.clement.tvscheduler.task;
 
-import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
 
@@ -9,59 +8,67 @@ import com.clement.tvscheduler.MainActivity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Clément on 09/07/2016.
  */
-public class TVStatusTask extends AsyncTask<Integer, Integer, Long> {
+public class TVStatusTask extends BaseTask {
 
-    private static final String TAG = "TVStatus";
-
-    private MainActivity mainActivity;
-
-    private String messageRetour;
 
     TVStatus tvStatus;
+    String baseUrl;
+    private String messageRetour;
 
-    public TVStatusTask(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public TVStatusTask(MainActivity mainActivity, String baseUrl) {
+
+        super(mainActivity);
+        this.baseUrl = baseUrl;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            Log.i(TAG, "Execution avant");
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL("http://192.168.1.20/tvscheduler/tvstatus").openConnection();
-            InputStream is=urlConnection.getInputStream();
-            tvStatus=readJsonStream(is);
-            messageRetour="Succès";
-            Log.i(TAG, "Execution après");
+            Log.i(MainActivity.TAG, "Execution " + this.getClass());
+            InputStream is = installCertificate(new URL(baseUrl + "/tvscheduler/tvstatus"));
+            tvStatus = readJsonStream(is);
+            messageRetour = "Succès";
+            Log.i(MainActivity.TAG, "Execution après");
             return 0L;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e(MainActivity.TAG, e.getMessage());
         }
-        messageRetour="Service non disponible";
-        return null;
+        messageRetour = "Service non disponible";
+        return 0L;
     }
 
 
     @Override
     protected void onPostExecute(Long aLong) {
         mainActivity.credited(messageRetour);
-        if(tvStatus!=null) {
+        if (tvStatus != null) {
             mainActivity.setTimeRemaining(tvStatus.getRemainingTime());
         }
-        if(tvStatus.getStatusRelay()) {
+        if (tvStatus.getStatusRelay()) {
             mainActivity.setRelayStatus("Tele autorisée");
-        }else{
+        } else {
             mainActivity.setRelayStatus("Tele non autorisée");
         }
+        if (tvStatus.getNextCreditOn() != null) {
+            mainActivity.setNextCredit(tvStatus.getNextCreditOn());
+        }
+
+
     }
 
+    /**
+     * @param in
+     * @return
+     * @throws IOException
+     */
     public TVStatus readJsonStream(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
@@ -71,7 +78,6 @@ public class TVStatusTask extends AsyncTask<Integer, Integer, Long> {
             reader.close();
         }
     }
-
 
 
     public List<Double> readDoublesArray(JsonReader reader) throws IOException {
@@ -86,22 +92,28 @@ public class TVStatusTask extends AsyncTask<Integer, Integer, Long> {
     }
 
     public TVStatus readTvStatus(JsonReader reader) throws IOException {
-        Log.i(TAG, "Decryptage du TV status");
+        Log.i(MainActivity.TAG, "Decryptage du TV status");
 
-        TVStatus tvStatus=new TVStatus();
+        TVStatus tvStatus = new TVStatus();
 
         String remainingTime = null;
+        Date nextCredit = null;
+        Integer nextAmount = null;
         Boolean relayStatus = false;
 
         reader.beginObject();
         while (reader.hasNext()) {
             String name = reader.nextName();
-            Log.i(TAG, "Decryptage du TV status cahpite name "+name);
+            Log.i(MainActivity.TAG, "Decryptage du TV status entry name " + name);
 
             if (name.equals("remainingTime")) {
                 remainingTime = reader.nextString();
             } else if (name.equals("relayStatus")) {
                 relayStatus = reader.nextBoolean();
+            } else if (name.equals("dateOfCredit")) {
+                nextCredit = new Date(reader.nextInt());
+            } else if (name.equals("amountOfCredit")) {
+                nextAmount = reader.nextInt();
             } else {
                 reader.skipValue();
             }
@@ -111,4 +123,6 @@ public class TVStatusTask extends AsyncTask<Integer, Integer, Long> {
         reader.endObject();
         return tvStatus;
     }
+
+
 }
