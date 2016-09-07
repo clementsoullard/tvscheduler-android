@@ -33,7 +33,7 @@ public class TVStatusTask extends BaseTask {
     protected Long doInBackground(Integer... params) {
         try {
             Log.i(MainActivity.TAG, "Execution " + this.getClass());
-            InputStream is = installCertificate(new URL(baseUrl + "/tvscheduler/tvstatus"));
+            InputStream is = getInputStreamConnection(new URL(baseUrl + "/tvscheduler/tvstatus"));
             tvStatus = readJsonStream(is);
             messageRetour = "Succès";
             Log.i(MainActivity.TAG, "Execution après");
@@ -58,7 +58,7 @@ public class TVStatusTask extends BaseTask {
             mainActivity.setRelayStatus("Tele non autorisée");
         }
         if (tvStatus.getNextCreditOn() != null) {
-            mainActivity.setNextCredit(tvStatus.getNextCreditOn());
+            mainActivity.setNextCredit(tvStatus.getNextCreditOn(), tvStatus.getNextCreditAmount());
         }
 
 
@@ -79,7 +79,11 @@ public class TVStatusTask extends BaseTask {
         }
     }
 
-
+    /**
+     * @param reader
+     * @return
+     * @throws IOException
+     */
     public List<Double> readDoublesArray(JsonReader reader) throws IOException {
         List<Double> doubles = new ArrayList<Double>();
 
@@ -91,6 +95,13 @@ public class TVStatusTask extends BaseTask {
         return doubles;
     }
 
+    /**
+     * This reads the json.
+     *
+     * @param reader
+     * @return
+     * @throws IOException
+     */
     public TVStatus readTvStatus(JsonReader reader) throws IOException {
         Log.i(MainActivity.TAG, "Decryptage du TV status");
 
@@ -111,8 +122,10 @@ public class TVStatusTask extends BaseTask {
             } else if (name.equals("relayStatus")) {
                 relayStatus = reader.nextBoolean();
             } else if (name.equals("dateOfCredit")) {
-                nextCredit = new Date(reader.nextInt());
-            } else if (name.equals("amountOfCredit")) {
+                Long dateInt = reader.nextLong();
+                Log.i(MainActivity.TAG, "Lecture de la date " + dateInt);
+                nextCredit = new Date(dateInt);
+            } else if (name.equals("amountOfCreditInMinutes")) {
                 nextAmount = reader.nextInt();
             } else {
                 reader.skipValue();
@@ -120,6 +133,8 @@ public class TVStatusTask extends BaseTask {
         }
         tvStatus.setRemainingSecond(remainingTime);
         tvStatus.setStatusRelay(relayStatus);
+        tvStatus.setNextCreditOn(nextCredit);
+        tvStatus.setNextCreditAmount(nextAmount);
         reader.endObject();
         return tvStatus;
     }

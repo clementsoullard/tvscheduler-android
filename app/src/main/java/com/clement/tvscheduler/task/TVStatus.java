@@ -40,4 +40,12 @@ public class TVStatus {
     public void setNextCreditOn(Date nextCreditOn) {
         this.nextCreditOn = nextCreditOn;
     }
+
+    public Integer getNextCreditAmount() {
+        return nextCreditAmount;
+    }
+
+    public void setNextCreditAmount(Integer nextCreditAmount) {
+        this.nextCreditAmount = nextCreditAmount;
+    }
 }

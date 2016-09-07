@@ -22,25 +22,42 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class MainActivity extends FragmentActivity {
 
     public final static String TAG = "MainActivity";
     public static final String HTTP_RESEAU_LOCAL = "http://192.168.43.109/";
 
-    public static final DateFormat dfs = new SimpleDateFormat("EEE dd, hh:mm");
-
+    public static final DateFormat dfs;
     public static final String HTTP_RESEAU_INET = "https://www.cesarsuperstar.com/";
+
+    static {
+        dfs = new SimpleDateFormat("EEE dd, HH:mm", Locale.FRANCE);
+        dfs.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+    }
+
     DecimalFormat df = new DecimalFormat("##");
+
     private Button tvOn;
+
     private Button tvOff;
+
     private Button tvCredit30;
+
     private Button punition;
+
     private Button prive;
+
     private Button recompense;
+
     private Button tvCredit60;
+
     private TextView remainingTimeView;
+
     private TextView relayStatusView;
+
     private TextView nextCreditView;
 
     @Override
@@ -51,7 +68,6 @@ public class MainActivity extends FragmentActivity {
         TVStatusTask tvStatusTask = new TVStatusTask(this, getBaseURL());
         Log.i(TAG, "Update TV status onCreate");
         tvStatusTask.execute();
-
     }
 
     /**
@@ -147,8 +163,8 @@ public class MainActivity extends FragmentActivity {
         relayStatusView.setText(relayStatus);
     }
 
-    public void setNextCredit(Date nextCredit) {
-        relayStatusView.setText(dfs.format(nextCredit));
+    public void setNextCredit(Date nextCredit, Integer numberOfMinutes) {
+        nextCreditView.setText(numberOfMinutes.toString() + "mn credite le " + dfs.format(nextCredit));
     }
 
     private String getBaseURL() {
@@ -159,7 +175,6 @@ public class MainActivity extends FragmentActivity {
         if (netType == ConnectivityManager.TYPE_WIFI) {
             Log.i(TAG, "Network is ok");
             return HTTP_RESEAU_LOCAL;
-
         } else {
             Log.i(TAG, " on WAN");
             return HTTP_RESEAU_INET;
@@ -221,14 +236,4 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-//
-//      URL url = new URL("https://www.cesarsuperstar.com/");
-//        HttpsURLConnection urlConnection =
-//                (HttpsURLConnection)url.openConnection();
-//      // urlConnection.setSSLSocketFactory(context.getSocketFactory());
-//
-//
-//     InputStream in = urlConnection.getInputStream();
-//
-//    }
 }
