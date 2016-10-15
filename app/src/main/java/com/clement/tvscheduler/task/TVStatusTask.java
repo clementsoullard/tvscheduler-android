@@ -48,19 +48,21 @@ public class TVStatusTask extends BaseTask {
 
     @Override
     protected void onPostExecute(Long aLong) {
-        mainActivity.showMessage(messageRetour);
         if (tvStatus != null) {
             mainActivity.setTimeRemaining(tvStatus.getRemainingTime());
             if (tvStatus.getStatusRelay()) {
-                mainActivity.setRelayStatus("Tele autorisée");
+                mainActivity.setRelayStatus("Télé autorisée");
             } else {
-                mainActivity.setRelayStatus("Tele non autorisée");
+                mainActivity.setRelayStatus("Télé interdite");
             }
             if (tvStatus.getNextCreditOn() != null) {
                 mainActivity.setNextCredit(tvStatus.getNextCreditOn(), tvStatus.getNextCreditAmount());
             }
+            if (tvStatus.getConsumedToday() != null) {
+                mainActivity.setConsumedToday(tvStatus.getConsumedToday());
+            }
         } else {
-            mainActivity.showMessage("Impossible de se connecter au serveru");
+            mainActivity.showMessage("Impossible de se connecter au serveur");
         }
 
 
@@ -105,13 +107,14 @@ public class TVStatusTask extends BaseTask {
      * @throws IOException
      */
     public TVStatus readTvStatus(JsonReader reader) throws IOException {
-        Log.i(MainActivity.TAG, "Decryptage du TV status");
+        Log.d(MainActivity.TAG, "Decryptage du TV status");
 
         TVStatus tvStatus = new TVStatus();
 
         String remainingTime = null;
         Date nextCredit = null;
         Integer nextAmount = null;
+        String minutesToday = "-";
         Boolean relayStatus = false;
 
         reader.beginObject();
@@ -127,6 +130,10 @@ public class TVStatusTask extends BaseTask {
                 Long dateInt = reader.nextLong();
                 Log.i(MainActivity.TAG, "Lecture de la date " + dateInt);
                 nextCredit = new Date(dateInt);
+            } else if (name.equals("minutesToday")) {
+                Integer minutesInt = reader.nextInt();
+                Log.i(MainActivity.TAG, "Lecture des minutes " + minutesInt);
+                minutesToday = "Minutes consommées: " + minutesInt;
             } else if (name.equals("amountOfCreditInMinutes")) {
                 nextAmount = reader.nextInt();
             } else {
@@ -137,6 +144,7 @@ public class TVStatusTask extends BaseTask {
         tvStatus.setStatusRelay(relayStatus);
         tvStatus.setNextCreditOn(nextCredit);
         tvStatus.setNextCreditAmount(nextAmount);
+        tvStatus.setConsumedToday(minutesToday);
         reader.endObject();
         return tvStatus;
     }

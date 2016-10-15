@@ -13,6 +13,8 @@ public class TVStatus {
 
     private String remainingTime;
 
+    private String consumedToday;
+
     private Date nextCreditOn;
 
     private Integer nextCreditAmount;
@@ -47,5 +49,13 @@ public class TVStatus {
 
     public void setNextCreditAmount(Integer nextCreditAmount) {
         this.nextCreditAmount = nextCreditAmount;
+    }
+
+    public void setConsumedToday(String consumaedToday) {
+        this.consumedToday = consumaedToday;
+    }
+
+    public String getConsumedToday() {
+        return consumedToday;
     }
 }

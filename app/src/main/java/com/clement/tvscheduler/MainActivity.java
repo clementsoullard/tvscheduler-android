@@ -60,13 +60,23 @@ public class MainActivity extends FragmentActivity {
 
     private TextView nextCreditView;
 
+    private TextView consumedTodayView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
         TVStatusTask tvStatusTask = new TVStatusTask(this, getBaseURL());
-        Log.i(TAG, "Update TV status onCreate");
+        Log.d(TAG, "Passage sur on create");
+        tvStatusTask.execute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TVStatusTask tvStatusTask = new TVStatusTask(this, getBaseURL());
+        Log.d(TAG, "Passage sur on resume");
         tvStatusTask.execute();
     }
 
@@ -84,6 +94,7 @@ public class MainActivity extends FragmentActivity {
         remainingTimeView = (TextView) findViewById(R.id.remainingTime_view);
         relayStatusView = (TextView) findViewById(R.id.relayStatus_view);
         nextCreditView = (TextView) findViewById(R.id.nextCredit_view);
+        consumedTodayView = (TextView) findViewById(R.id.consumedToday_view);
 
         tvOn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +172,10 @@ public class MainActivity extends FragmentActivity {
 
     public void setRelayStatus(String relayStatus) {
         relayStatusView.setText(relayStatus);
+    }
+
+    public void setConsumedToday(String relayStatus) {
+        consumedTodayView.setText(relayStatus);
     }
 
     public void setNextCredit(Date nextCredit, Integer numberOfMinutes) {

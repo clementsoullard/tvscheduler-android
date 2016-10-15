@@ -12,91 +12,109 @@
     tools:context="com.clement.tvscheduler.MainActivity"
     tools:showIn="@layout/activity_main">
 
-        <LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-           android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-    <Button
-        android:id="@+id/button_on"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/abc_search_url_text"
-        android:text="ON" />
-
-    <Button
-        android:id="@+id/button_off"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
-        android:text="OFF" />
-
-    <Button
-        android:id="@+id/button_30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/abc_search_url_text"
-        android:text="30 Mn" />
-        <Button
-            android:id="@+id/button_60"
-            android:layout_width="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:textAlignment="center"
+            android:id="@+id/title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/abc_search_url_text"
-            android:text="60 Mn" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/button_punition"
-            android:layout_width="wrap_content"
+            android:text="Surveillance Télé"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
-            android:text="Punition" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button_prive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
-            android:text="Prive de Télé" />
+            <Button
+                android:id="@+id/button_on"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/greenButton"
+                android:text="ON" />
 
-        <Button
-            android:id="@+id/button_recompense"
-            android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/button_off"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/redButton"
+                android:text="OFF" />
+
+            <Button
+                android:id="@+id/button_30"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/greenButton"
+                android:text="30 Mn" />
+
+            <Button
+                android:id="@+id/button_60"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/greenButton"
+                android:text="60 Mn" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/abc_search_url_text"
-            android:text="Récompense" />
-</LinearLayout>
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/button_punition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/redButton"
+                android:text="Punition" />
+
+            <Button
+                android:id="@+id/button_prive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/redButton"
+                android:text="Prive de Télé" />
+
+            <Button
+                android:id="@+id/button_recompense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/greenButton"
+                android:text="Récompense" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/remainingTime_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-            android:text="remainingTime"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/relayStatus_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="relayStatus"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/relayStatus_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/nextCredit_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="nextCredit"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/nextCredit_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/consumedToday_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
 </RelativeLayout>
