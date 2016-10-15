@@ -48,17 +48,19 @@ public class TVStatusTask extends BaseTask {
 
     @Override
     protected void onPostExecute(Long aLong) {
-        mainActivity.credited(messageRetour);
+        mainActivity.showMessage(messageRetour);
         if (tvStatus != null) {
             mainActivity.setTimeRemaining(tvStatus.getRemainingTime());
-        }
-        if (tvStatus.getStatusRelay()) {
-            mainActivity.setRelayStatus("Tele autorisée");
+            if (tvStatus.getStatusRelay()) {
+                mainActivity.setRelayStatus("Tele autorisée");
+            } else {
+                mainActivity.setRelayStatus("Tele non autorisée");
+            }
+            if (tvStatus.getNextCreditOn() != null) {
+                mainActivity.setNextCredit(tvStatus.getNextCreditOn(), tvStatus.getNextCreditAmount());
+            }
         } else {
-            mainActivity.setRelayStatus("Tele non autorisée");
-        }
-        if (tvStatus.getNextCreditOn() != null) {
-            mainActivity.setNextCredit(tvStatus.getNextCreditOn(), tvStatus.getNextCreditAmount());
+            mainActivity.showMessage("Impossible de se connecter au serveru");
         }
 
 

@@ -3,9 +3,7 @@ package com.clement.tvscheduler.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -17,20 +15,21 @@ import android.widget.TextView;
 
 import com.clement.tvscheduler.MainActivity;
 import com.clement.tvscheduler.R;
+import com.clement.tvscheduler.task.BaseTask;
 
 public class PinDialog extends android.support.v4.app.DialogFragment {
 
     private String midPin;
 
-    private AsyncTask asyncTask;
+    private BaseTask baseTask;
 
 
     public void setMidPin(String midPin) {
         this.midPin = midPin;
     }
 
-    public void setAsyncTask(AsyncTask asyncTask) {
-        this.asyncTask = asyncTask;
+    public void setBaseTask(BaseTask baseTask) {
+        this.baseTask = baseTask;
     }
 
     @Nullable
@@ -61,7 +60,7 @@ public class PinDialog extends android.support.v4.app.DialogFragment {
                 .setPositiveButton(R.string.pin, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                      MainActivity mainActivity=(MainActivity) getActivity();
-                        mainActivity.checkPin(midPin,et.getText().toString(),asyncTask);
+                        mainActivity.checkPin(midPin,et.getText().toString(), baseTask);
 
                     }
                 })

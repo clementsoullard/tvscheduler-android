@@ -10,46 +10,46 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- *
  * Created by Clément on 09/07/2016.
- *
  */
-public class CreditTask extends AsyncTask<Integer, Integer, Long> {
+public class CreditTask extends BaseTask {
 
 
-    private MainActivity mainActivity;
 
     private String messageRetour;
 
     private String baseUrl;
+
+    private Integer credit;
 
     /**
      *
      *
      */
 
-    public CreditTask(MainActivity mainActivity, String baseUrl) {
-        this.mainActivity = mainActivity;
-        this.baseUrl=baseUrl;
+    public CreditTask(MainActivity mainActivity, String baseUrl, Integer credit) {
+        super(mainActivity);
+         this.baseUrl = baseUrl;
+        this.credit = credit;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(baseUrl+"tvscheduler/credit?value=" + params[0]).openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL(baseUrl + "tvscheduler/credit?value=" + credit).openConnection();
             urlConnection.getContent();
-            messageRetour="Succès";
+            messageRetour = "Succès";
             return 0L;
         } catch (IOException e) {
-            Log.e(MainActivity.TAG, "Erreur "+e.getMessage());
+            Log.e(MainActivity.TAG, "Erreur " + e.getMessage());
         }
-        messageRetour="Service non disponible";
+        messageRetour = "Service non disponible";
         return null;
     }
 
 
     @Override
     protected void onPostExecute(Long aLong) {
-        mainActivity.credited(messageRetour);
+        mainActivity.showMessage(messageRetour);
     }
 }

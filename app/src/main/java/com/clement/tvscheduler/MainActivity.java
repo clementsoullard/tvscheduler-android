@@ -3,7 +3,6 @@ package com.clement.tvscheduler;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clement.tvscheduler.dialog.PinDialog;
+import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.CreditTask;
 import com.clement.tvscheduler.task.PunitionTask;
 import com.clement.tvscheduler.task.TVStatusTask;
@@ -28,7 +28,7 @@ import java.util.TimeZone;
 public class MainActivity extends FragmentActivity {
 
     public final static String TAG = "MainActivity";
-    public static final String HTTP_RESEAU_LOCAL = "http://192.168.43.109/";
+    public static final String HTTP_RESEAU_LOCAL = "http://192.168.1.32/";
 
     public static final DateFormat dfs;
     public static final String HTTP_RESEAU_INET = "https://www.cesarsuperstar.com/";
@@ -143,7 +143,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * @param message
      */
-    public void credited(String message) {
+    public void showMessage(String message) {
         Context context = getApplicationContext();
         CharSequence text = message;
         int duration = Toast.LENGTH_SHORT;
@@ -189,7 +189,7 @@ public class MainActivity extends FragmentActivity {
      */
     void requestServerCredit(int credit) {
         int netType;
-        CreditTask creditTask = new CreditTask(MainActivity.this, getBaseURL());
+        CreditTask creditTask = new CreditTask(MainActivity.this, getBaseURL(),credit);
         enterPin(creditTask);
     }
 
@@ -207,13 +207,13 @@ public class MainActivity extends FragmentActivity {
     /**
      * This creates a dialog to enter the pin
      */
-    public void enterPin(AsyncTask asyncTask) {
+    public void enterPin(BaseTask asyncTask) {
         Double d = Math.ceil(Math.random() * 100);
         int random = d.intValue();
         String midPin = df.format(random);
         PinDialog newFragment = new PinDialog();
         newFragment.setMidPin(midPin);
-        newFragment.setAsyncTask(asyncTask);
+        newFragment.setBaseTask(asyncTask);
         FragmentManager fm = getSupportFragmentManager();
         newFragment.show(fm, "pin");
     }
@@ -225,7 +225,7 @@ public class MainActivity extends FragmentActivity {
      * @param valueEntered
      * @param asyncTask
      */
-    public void checkPin(String midPin, String valueEntered, AsyncTask asyncTask) {
+    public void checkPin(String midPin, String valueEntered, BaseTask asyncTask) {
         String expectedResult = "1" + midPin + "1";
         if (expectedResult.equals(valueEntered)) {
             Log.i(TAG, "La bonne valeur a ete entree");

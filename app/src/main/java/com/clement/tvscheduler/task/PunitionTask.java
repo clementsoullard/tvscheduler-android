@@ -91,6 +91,6 @@ public class PunitionTask extends BaseTask {
 
     @Override
     protected void onPostExecute(Long aLong) {
-        mainActivity.credited(messageRetour);
+        mainActivity.showMessage(messageRetour);
     }
 }
