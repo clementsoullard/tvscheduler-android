@@ -26,16 +26,14 @@ public class PunitionTask extends BaseTask {
 
     private String baserUrl;
 
-
-    public PunitionTask(MainActivity mainActivity, String baseUrl) {
+    public PunitionTask(MainActivity mainActivity) {
         super(mainActivity);
-        this.baserUrl = baseUrl;
-    }
+     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(baserUrl + "tvscheduler/punition").openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL(getBaseURL() + "tvscheduler/punition").openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);

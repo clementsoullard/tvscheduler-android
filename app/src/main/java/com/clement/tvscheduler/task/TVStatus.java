@@ -3,9 +3,7 @@ package com.clement.tvscheduler.task;
 import java.util.Date;
 
 /**
- *
  * Created by Clément on 17/07/2016.
- *
  */
 public class TVStatus {
 
@@ -16,6 +14,8 @@ public class TVStatus {
     private String consumedToday;
 
     private Date nextCreditOn;
+
+    private Boolean activeTV;
 
     private Integer nextCreditAmount;
 
@@ -57,5 +57,13 @@ public class TVStatus {
 
     public String getConsumedToday() {
         return consumedToday;
+    }
+
+    public Boolean getActiveTV() {
+        return activeTV;
+    }
+
+    public void setActiveTV(Boolean activeTV) {
+        this.activeTV = activeTV;
     }
 }

@@ -9,31 +9,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by Clément on 09/07/2016.
  */
 public class TVStatusTask extends BaseTask {
 
-
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     TVStatus tvStatus;
-    String baseUrl;
     private String messageRetour;
 
-    public TVStatusTask(MainActivity mainActivity, String baseUrl) {
+    public TVStatusTask(MainActivity mainActivity) {
 
         super(mainActivity);
-        this.baseUrl = baseUrl;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
             Log.i(MainActivity.TAG, "Execution " + this.getClass());
-            InputStream is = getInputStreamConnection(new URL(baseUrl + "/tvscheduler/tvstatus"));
+            InputStream is = getInputStreamConnection("/tvscheduler/tvstatus");
             tvStatus = readJsonStream(is);
             messageRetour = "Succès";
             Log.i(MainActivity.TAG, "Execution après");
@@ -60,6 +61,12 @@ public class TVStatusTask extends BaseTask {
             }
             if (tvStatus.getConsumedToday() != null) {
                 mainActivity.setConsumedToday(tvStatus.getConsumedToday());
+            }
+            if (tvStatus.getActiveTV()) {
+                mainActivity.setTvStatus("La télé est ON");
+            }
+            else{
+                mainActivity.setTvStatus("La télé est OFF");
             }
         } else {
             mainActivity.showMessage("Impossible de se connecter au serveur");
@@ -116,6 +123,7 @@ public class TVStatusTask extends BaseTask {
         Integer nextAmount = null;
         String minutesToday = "-";
         Boolean relayStatus = false;
+        Boolean activeTv = false;
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -127,15 +135,22 @@ public class TVStatusTask extends BaseTask {
             } else if (name.equals("relayStatus")) {
                 relayStatus = reader.nextBoolean();
             } else if (name.equals("dateOfCredit")) {
-                Long dateInt = reader.nextLong();
+                String dateInt = reader.nextString();
                 Log.i(MainActivity.TAG, "Lecture de la date " + dateInt);
-                nextCredit = new Date(dateInt);
+                try {
+                    nextCredit = df.parse(dateInt);
+                } catch (ParseException e) {
+                    Log.i(MainActivity.TAG, e.getMessage(), e);
+
+                }
             } else if (name.equals("minutesToday")) {
                 Integer minutesInt = reader.nextInt();
                 Log.i(MainActivity.TAG, "Lecture des minutes " + minutesInt);
                 minutesToday = "Minutes consommées: " + minutesInt;
             } else if (name.equals("amountOfCreditInMinutes")) {
                 nextAmount = reader.nextInt();
+            } else if (name.equals("activeStandbyState")) {
+                activeTv = (reader.nextInt() != 1);
             } else {
                 reader.skipValue();
             }
@@ -145,6 +160,8 @@ public class TVStatusTask extends BaseTask {
         tvStatus.setNextCreditOn(nextCredit);
         tvStatus.setNextCreditAmount(nextAmount);
         tvStatus.setConsumedToday(minutesToday);
+        tvStatus.setActiveTV(activeTv);
+
         reader.endObject();
         return tvStatus;
     }

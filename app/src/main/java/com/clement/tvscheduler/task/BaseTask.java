@@ -1,6 +1,9 @@
 package com.clement.tvscheduler.task;
 
+import android.content.Context;
 import android.content.res.AssetManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -23,18 +26,22 @@ import javax.net.ssl.TrustManagerFactory;
  */
 public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
 
+    public static final String HTTP_RESEAU_LOCAL = "http://192.168.1.32/";
+    public static final String HTTP_RESEAU_INET = "https://www.cesarsuperstar.com/";
+
     static SSLContext context;
     protected MainActivity mainActivity;
+
     public BaseTask(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
     /**
-     * @param url
+     * @param uri
      * @return
      * @throws Exception
      */
-    protected InputStream getInputStreamConnection(URL url) throws Exception {
+    protected InputStream getInputStreamConnection(String uri) throws Exception {
         if (context == null) {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             HttpsURLConnection.setDefaultHostnameVerifier(new NullHostnameVerifier());
@@ -60,6 +67,7 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
             context = SSLContext.getInstance("TLS");
             context.init(null, tmf.getTrustManagers(), null);
         }
+        URL url = new URL(getBaseURL() + uri);
         if (url.toString().startsWith("https:")) {
             HttpsURLConnection urlConnection =
                     (HttpsURLConnection) url.openConnection();
@@ -72,5 +80,23 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
             InputStream in = urlConnection.getInputStream();
             return in;
         }
+    }
+
+    protected String getBaseURL() {
+        ConnectivityManager cm = (ConnectivityManager) mainActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        int netType = info.getType();
+        Log.i(MainActivity.TAG, "NET Type " + netType + "  " + ConnectivityManager.TYPE_MOBILE + "  " + ConnectivityManager.TYPE_MOBILE_DUN + "  " + ConnectivityManager.TYPE_WIFI + " " + info.getExtraInfo() + " " + info.getSubtypeName());
+        if (netType == ConnectivityManager.TYPE_WIFI) {
+            Log.i(MainActivity.TAG, "Network is ok");
+            String extraInfo = info.getExtraInfo();
+            if (extraInfo.contains("B1B6")) {
+                return HTTP_RESEAU_LOCAL;
+            }
+        }
+        Log.i(MainActivity.TAG, " on WAN");
+        return HTTP_RESEAU_INET;
+
+
     }
 }

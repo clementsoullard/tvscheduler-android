@@ -17,26 +17,22 @@ public class CreditTask extends BaseTask {
 
 
     private String messageRetour;
-
-    private String baseUrl;
-
-    private Integer credit;
+      private Integer credit;
 
     /**
      *
      *
      */
 
-    public CreditTask(MainActivity mainActivity, String baseUrl, Integer credit) {
+    public CreditTask(MainActivity mainActivity, Integer credit) {
         super(mainActivity);
-         this.baseUrl = baseUrl;
-        this.credit = credit;
+          this.credit = credit;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(baseUrl + "tvscheduler/credit?value=" + credit).openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL( getBaseURL()+ "tvscheduler/credit?value=" + credit).openConnection();
             urlConnection.getContent();
             messageRetour = "Succès";
             return 0L;

@@ -28,10 +28,8 @@ import java.util.TimeZone;
 public class MainActivity extends FragmentActivity {
 
     public final static String TAG = "MainActivity";
-    public static final String HTTP_RESEAU_LOCAL = "http://192.168.1.32/";
 
     public static final DateFormat dfs;
-    public static final String HTTP_RESEAU_INET = "https://www.cesarsuperstar.com/";
 
     static {
         dfs = new SimpleDateFormat("EEE dd, HH:mm", Locale.FRANCE);
@@ -58,6 +56,8 @@ public class MainActivity extends FragmentActivity {
 
     private TextView relayStatusView;
 
+    private TextView tvStatusView;
+
     private TextView nextCreditView;
 
     private TextView consumedTodayView;
@@ -67,7 +67,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        TVStatusTask tvStatusTask = new TVStatusTask(this, getBaseURL());
+        TVStatusTask tvStatusTask = new TVStatusTask(this);
         Log.d(TAG, "Passage sur on create");
         tvStatusTask.execute();
     }
@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        TVStatusTask tvStatusTask = new TVStatusTask(this, getBaseURL());
+        TVStatusTask tvStatusTask = new TVStatusTask(this);
         Log.d(TAG, "Passage sur on resume");
         tvStatusTask.execute();
     }
@@ -95,6 +95,7 @@ public class MainActivity extends FragmentActivity {
         relayStatusView = (TextView) findViewById(R.id.relayStatus_view);
         nextCreditView = (TextView) findViewById(R.id.nextCredit_view);
         consumedTodayView = (TextView) findViewById(R.id.consumedToday_view);
+        tvStatusView = (TextView) findViewById(R.id.tvStatus_view);
 
         tvOn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,20 +183,10 @@ public class MainActivity extends FragmentActivity {
         nextCreditView.setText(numberOfMinutes.toString() + "mn credite le " + dfs.format(nextCredit));
     }
 
-    private String getBaseURL() {
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = cm.getActiveNetworkInfo();
-        int netType = info.getType();
-        Log.i(TAG, "NET Type " + netType + "  " + ConnectivityManager.TYPE_MOBILE + "  " + ConnectivityManager.TYPE_MOBILE_DUN + "  " + ConnectivityManager.TYPE_WIFI);
-        if (netType == ConnectivityManager.TYPE_WIFI) {
-            Log.i(TAG, "Network is ok");
-            return HTTP_RESEAU_LOCAL;
-        } else {
-            Log.i(TAG, " on WAN");
-            return HTTP_RESEAU_INET;
-        }
-
+    public void setTvStatus(String tvStatus) {
+        tvStatusView.setText(tvStatus);
     }
+
 
     /**
      * Reauest a credit to the server
@@ -204,7 +195,7 @@ public class MainActivity extends FragmentActivity {
      */
     void requestServerCredit(int credit) {
         int netType;
-        CreditTask creditTask = new CreditTask(MainActivity.this, getBaseURL(),credit);
+        CreditTask creditTask = new CreditTask(MainActivity.this, credit);
         enterPin(creditTask);
     }
 
@@ -215,7 +206,7 @@ public class MainActivity extends FragmentActivity {
      * @param punition
      */
     void requestServerPunition(int punition) {
-        PunitionTask puntionTask = new PunitionTask(MainActivity.this, getBaseURL());
+        PunitionTask puntionTask = new PunitionTask(MainActivity.this);
         enterPin(puntionTask);
     }
 
