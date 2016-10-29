@@ -1,8 +1,6 @@
 package com.clement.tvscheduler;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +13,7 @@ import android.widget.Toast;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.CreditTask;
+import com.clement.tvscheduler.task.ListTodoTask;
 import com.clement.tvscheduler.task.PunitionTask;
 import com.clement.tvscheduler.task.TVStatusTask;
 
@@ -29,14 +28,14 @@ public class MainActivity extends FragmentActivity {
 
     public final static String TAG = "MainActivity";
 
-    public static final DateFormat dfs;
+    public static final DateFormat datFormatSimple;
 
     static {
-        dfs = new SimpleDateFormat("EEE dd, HH:mm", Locale.FRANCE);
-        dfs.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+        datFormatSimple = new SimpleDateFormat("EEE dd, HH:mm", Locale.FRANCE);
+        datFormatSimple.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
     }
 
-    DecimalFormat df = new DecimalFormat("##");
+    DecimalFormat midPinFormat = new DecimalFormat("00");
 
     private Button tvOn;
 
@@ -78,6 +77,9 @@ public class MainActivity extends FragmentActivity {
         TVStatusTask tvStatusTask = new TVStatusTask(this);
         Log.d(TAG, "Passage sur on resume");
         tvStatusTask.execute();
+
+        ListTodoTask listTodoTask=new ListTodoTask(this);
+        listTodoTask.execute();
     }
 
     /**
@@ -180,7 +182,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void setNextCredit(Date nextCredit, Integer numberOfMinutes) {
-        nextCreditView.setText(numberOfMinutes.toString() + "mn credite le " + dfs.format(nextCredit));
+        nextCreditView.setText(numberOfMinutes.toString() + "mn credite le " + datFormatSimple.format(nextCredit));
     }
 
     public void setTvStatus(String tvStatus) {
@@ -216,7 +218,7 @@ public class MainActivity extends FragmentActivity {
     public void enterPin(BaseTask asyncTask) {
         Double d = Math.ceil(Math.random() * 100);
         int random = d.intValue();
-        String midPin = df.format(random);
+        String midPin = midPinFormat.format(random);
         PinDialog newFragment = new PinDialog();
         newFragment.setMidPin(midPin);
         newFragment.setBaseTask(asyncTask);

@@ -10,7 +10,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.clement.tvscheduler.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+
+    android:background="@color/black">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,9 +20,10 @@
         android:orientation="vertical">
         <TextView
             android:textAlignment="center"
-            android:id="@+id/title"
+                  android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="Surveillance Télé"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         <LinearLayout
@@ -92,11 +95,11 @@
             android:id="@+id/remainingTime_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-"
+                android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
         <TextView
             android:id="@+id/tvStatus_view"
-            android:layout_width="wrap_content"
+          android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -104,15 +107,15 @@
         <TextView
             android:id="@+id/relayStatus_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+         android:layout_height="wrap_content"
             android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/nextCredit_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
+             android:layout_height="wrap_content"
+           android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView

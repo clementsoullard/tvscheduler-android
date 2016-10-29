@@ -41,7 +41,7 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
      * @return
      * @throws Exception
      */
-    protected InputStream getInputStreamConnection(String uri) throws Exception {
+    protected HttpURLConnection getHttpUrlConnection(String uri) throws Exception {
         if (context == null) {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             HttpsURLConnection.setDefaultHostnameVerifier(new NullHostnameVerifier());
@@ -72,13 +72,11 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
             HttpsURLConnection urlConnection =
                     (HttpsURLConnection) url.openConnection();
             urlConnection.setSSLSocketFactory(context.getSocketFactory());
-            InputStream in = urlConnection.getInputStream();
-            return in;
+            return urlConnection;
         } else {
             HttpURLConnection urlConnection =
                     (HttpURLConnection) url.openConnection();
-            InputStream in = urlConnection.getInputStream();
-            return in;
+            return urlConnection;
         }
     }
 

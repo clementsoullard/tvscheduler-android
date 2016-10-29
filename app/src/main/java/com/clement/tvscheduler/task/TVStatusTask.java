@@ -8,13 +8,11 @@ import com.clement.tvscheduler.MainActivity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by Clément on 09/07/2016.
@@ -34,7 +32,7 @@ public class TVStatusTask extends BaseTask {
     protected Long doInBackground(Integer... params) {
         try {
             Log.i(MainActivity.TAG, "Execution " + this.getClass());
-            InputStream is = getInputStreamConnection("/tvscheduler/tvstatus");
+            InputStream is = getHttpUrlConnection("/tvscheduler/tvstatus").getInputStream();
             tvStatus = readJsonStream(is);
             messageRetour = "Succès";
             Log.i(MainActivity.TAG, "Execution après");
@@ -90,21 +88,7 @@ public class TVStatusTask extends BaseTask {
         }
     }
 
-    /**
-     * @param reader
-     * @return
-     * @throws IOException
-     */
-    public List<Double> readDoublesArray(JsonReader reader) throws IOException {
-        List<Double> doubles = new ArrayList<Double>();
 
-        reader.beginArray();
-        while (reader.hasNext()) {
-            doubles.add(reader.nextDouble());
-        }
-        reader.endArray();
-        return doubles;
-    }
 
     /**
      * This reads the json.
