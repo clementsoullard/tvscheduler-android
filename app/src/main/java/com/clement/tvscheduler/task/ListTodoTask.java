@@ -1,6 +1,7 @@
 package com.clement.tvscheduler.task;
 
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.Log;
 
 import com.clement.tvscheduler.MainActivity;
@@ -8,7 +9,6 @@ import com.clement.tvscheduler.MainActivity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class ListTodoTask extends BaseTask {
         for (Todo todo : todos) {
             Log.i(MainActivity.TAG, "Tache: " + todo.getName());
         }
-
+        mainActivity.setTodos(todos);
 
     }
 
@@ -97,12 +97,15 @@ public class ListTodoTask extends BaseTask {
 
         while (reader.hasNext()) {
             String nameJson = reader.nextName();
-            if (nameJson.equals("taskName")) {
+            JsonToken look = reader.peek();
+
+            if (look == JsonToken.NULL) {
+                reader.skipValue();
+            } else if (nameJson.equals("taskName")) {
                 name = reader.nextString();
             } else if (nameJson.equals("done")) {
                 done = reader.nextBoolean();
-            }
-            else {
+            } else {
                 reader.skipValue();
             }
 

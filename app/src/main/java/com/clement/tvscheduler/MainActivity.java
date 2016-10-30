@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +18,14 @@ import com.clement.tvscheduler.task.CreditTask;
 import com.clement.tvscheduler.task.ListTodoTask;
 import com.clement.tvscheduler.task.PunitionTask;
 import com.clement.tvscheduler.task.TVStatusTask;
+import com.clement.tvscheduler.task.Todo;
+import com.clement.tvscheduler.task.TodosAdapter;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -61,6 +66,8 @@ public class MainActivity extends FragmentActivity {
 
     private TextView consumedTodayView;
 
+    private ListView listTodos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +85,7 @@ public class MainActivity extends FragmentActivity {
         Log.d(TAG, "Passage sur on resume");
         tvStatusTask.execute();
 
-        ListTodoTask listTodoTask=new ListTodoTask(this);
+        ListTodoTask listTodoTask = new ListTodoTask(this);
         listTodoTask.execute();
     }
 
@@ -98,6 +105,7 @@ public class MainActivity extends FragmentActivity {
         nextCreditView = (TextView) findViewById(R.id.nextCredit_view);
         consumedTodayView = (TextView) findViewById(R.id.consumedToday_view);
         tvStatusView = (TextView) findViewById(R.id.tvStatus_view);
+        listTodos = (ListView) findViewById(R.id.listTodos);
 
         tvOn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,5 +251,11 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+
+    public void setTodos(List<Todo> todos) {
+        ListAdapter listAdapter = new TodosAdapter(todos,this,listTodos);
+        listTodos.setAdapter(listAdapter);
+
+    }
 
 }
