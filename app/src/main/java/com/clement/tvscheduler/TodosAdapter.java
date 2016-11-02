@@ -1,16 +1,20 @@
-package com.clement.tvscheduler.task;
+package com.clement.tvscheduler;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.clement.tvscheduler.MainActivity;
 import com.clement.tvscheduler.R;
+import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.task.UpdateTodoTask;
 
 import java.util.List;
 
@@ -71,7 +75,7 @@ public class TodosAdapter implements ListAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mainActivity
@@ -80,9 +84,21 @@ public class TodosAdapter implements ListAdapter {
         } else {
             rowView = convertView;
         }
+
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         textView.setText(todos.get(position).getName());
-        // Change the icon for Windows and iPhone
+        final Todo todo = todos.get(position);
+        final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
+        checkBox.setChecked(todo.getDone());
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                todo.setDone(checkBox.isChecked());
+                UpdateTodoTask updateTodoTask=new UpdateTodoTask(mainActivity,todo);
+                updateTodoTask.execute();
+                Log.i(MainActivity.TAG, "Click sur la tâche " + todo.getId());
+            }
+        });
 
         return rowView;
     }

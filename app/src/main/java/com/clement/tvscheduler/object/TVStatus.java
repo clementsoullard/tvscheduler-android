@@ -1,4 +1,4 @@
-package com.clement.tvscheduler.task;
+package com.clement.tvscheduler.object;
 
 import java.util.Date;
 

@@ -1,44 +1,40 @@
 package com.clement.tvscheduler.task;
 
-import android.content.ContentValues;
 import android.util.Log;
 
 import com.clement.tvscheduler.MainActivity;
+import com.clement.tvscheduler.object.Todo;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Clément on 09/07/2016.
  */
-public class PunitionTask extends BaseTask {
+public class UpdateTodoTask extends BaseTask {
 
 
     private String messageRetour;
 
     private String baserUrl;
 
-    private Integer punition;
+    private Todo todo;
 
 
-    public PunitionTask(MainActivity mainActivity,Integer punition) {
+    public UpdateTodoTask(MainActivity mainActivity, Todo todo) {
         super(mainActivity);
-        this.punition=punition;
+        this.todo=todo;
 
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/punition");
+            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/task");
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -50,8 +46,11 @@ public class PunitionTask extends BaseTask {
              */
 
          JSONObject root = new JSONObject();
-            root.put("value", punition);
-            root.put("advertisementId", "desobeissance");
+            root.put("id", todo.getId());
+            root.put("done", todo.getDone());
+            root.put("date", todo.getDate());
+            root.put("owner", todo.getOwner());
+            root.put("taskName", todo.getName());
 
             String str = root.toString();
             byte[] outputBytes = str.getBytes("UTF-8");
@@ -62,7 +61,7 @@ public class PunitionTask extends BaseTask {
             int responseCode = urlConnection.getResponseCode();
 
 
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
+            if (responseCode == HttpsURLConnection.HTTP_CREATED) {
                 Log.e(MainActivity.TAG, "14 - HTTP_OK");
             } else {
                 Log.e(MainActivity.TAG, responseCode + "  - False - HTTP_OK");

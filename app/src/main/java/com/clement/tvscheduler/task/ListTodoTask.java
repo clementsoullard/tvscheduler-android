@@ -5,12 +5,14 @@ import android.util.JsonToken;
 import android.util.Log;
 
 import com.clement.tvscheduler.MainActivity;
+import com.clement.tvscheduler.object.Todo;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -92,6 +94,9 @@ public class ListTodoTask extends BaseTask {
         Todo todo = new Todo();
         reader.beginObject();
         String name = null;
+        String id = null;
+        String date = null;
+        String owner=null;
         Boolean done = null;
 
 
@@ -105,7 +110,14 @@ public class ListTodoTask extends BaseTask {
                 name = reader.nextString();
             } else if (nameJson.equals("done")) {
                 done = reader.nextBoolean();
-            } else {
+            }else if (nameJson.equals("idr")) {
+                id = reader.nextString();
+            }else if (nameJson.equals("date")) {
+                date = reader.nextString();
+            } else if (nameJson.equals("owner")) {
+                owner = reader.nextString();
+            }
+            else {
                 reader.skipValue();
             }
 
@@ -113,6 +125,8 @@ public class ListTodoTask extends BaseTask {
         reader.endObject();
         todo.setDone(done);
         todo.setName(name);
+        todo.setDate(date);
+        todo.setId(id);
 
         return todo;
     }

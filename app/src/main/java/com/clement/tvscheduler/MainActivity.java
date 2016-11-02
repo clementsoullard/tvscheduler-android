@@ -18,8 +18,7 @@ import com.clement.tvscheduler.task.CreditTask;
 import com.clement.tvscheduler.task.ListTodoTask;
 import com.clement.tvscheduler.task.PunitionTask;
 import com.clement.tvscheduler.task.TVStatusTask;
-import com.clement.tvscheduler.task.Todo;
-import com.clement.tvscheduler.task.TodosAdapter;
+import com.clement.tvscheduler.object.Todo;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -216,7 +215,7 @@ public class MainActivity extends FragmentActivity {
      * @param punition
      */
     void requestServerPunition(int punition) {
-        PunitionTask puntionTask = new PunitionTask(MainActivity.this);
+        PunitionTask puntionTask = new PunitionTask(MainActivity.this,punition);
         enterPin(puntionTask);
     }
 

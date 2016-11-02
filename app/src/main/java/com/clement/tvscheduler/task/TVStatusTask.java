@@ -4,15 +4,14 @@ import android.util.JsonReader;
 import android.util.Log;
 
 import com.clement.tvscheduler.MainActivity;
+import com.clement.tvscheduler.object.TVStatus;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Clément on 09/07/2016.
