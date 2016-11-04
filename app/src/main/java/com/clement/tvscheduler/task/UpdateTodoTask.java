@@ -34,8 +34,8 @@ public class UpdateTodoTask extends BaseTask {
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/task");
-            urlConnection.setRequestMethod("POST");
+            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/task/"+todo.getId());
+            urlConnection.setRequestMethod("PATCH");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
@@ -48,10 +48,6 @@ public class UpdateTodoTask extends BaseTask {
          JSONObject root = new JSONObject();
             root.put("id", todo.getId());
             root.put("done", todo.getDone());
-            root.put("date", todo.getDate());
-            root.put("owner", todo.getOwner());
-            root.put("taskName", todo.getName());
-
             String str = root.toString();
             byte[] outputBytes = str.getBytes("UTF-8");
             OutputStream os = urlConnection.getOutputStream();
@@ -61,7 +57,7 @@ public class UpdateTodoTask extends BaseTask {
             int responseCode = urlConnection.getResponseCode();
 
 
-            if (responseCode == HttpsURLConnection.HTTP_CREATED) {
+            if (responseCode == HttpsURLConnection.HTTP_NO_CONTENT) {
                 Log.e(MainActivity.TAG, "14 - HTTP_OK");
             } else {
                 Log.e(MainActivity.TAG, responseCode + "  - False - HTTP_OK");

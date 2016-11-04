@@ -12,7 +12,6 @@ public class Todo {
 
     Boolean done;
 
-   String date;
 
    String owner;
 
@@ -44,15 +43,7 @@ public class Todo {
         this.id = id;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getOwner() {
+     public String getOwner() {
         return owner;
     }
 

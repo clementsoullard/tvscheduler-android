@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
     public final static String TAG = "MainActivity";
 
@@ -74,6 +76,11 @@ public class MainActivity extends FragmentActivity {
         init();
         TVStatusTask tvStatusTask = new TVStatusTask(this);
         Log.d(TAG, "Passage sur on create");
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
+    //    setSupportActionBar(myToolbar);
+        myToolbar.setTitle("Distribaffe");
+        myToolbar.setSubtitle("Pour enfants gentils et méchants");
         tvStatusTask.execute();
     }
 

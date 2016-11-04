@@ -125,8 +125,7 @@ public class ListTodoTask extends BaseTask {
         reader.endObject();
         todo.setDone(done);
         todo.setName(name);
-        todo.setDate(date);
-        todo.setId(id);
+          todo.setId(id);
 
         return todo;
     }
