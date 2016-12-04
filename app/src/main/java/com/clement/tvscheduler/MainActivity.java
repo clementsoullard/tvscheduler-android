@@ -1,12 +1,16 @@
 package com.clement.tvscheduler;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -78,10 +82,27 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Passage sur on create");
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 
-    //    setSupportActionBar(myToolbar);
+        /**
+         * Création de la toolbar
+         */
         myToolbar.setTitle("Distribaffe");
         myToolbar.setSubtitle("Pour enfants gentils et méchants");
+        setSupportActionBar(myToolbar);
+        //  Cheecking tasks
         tvStatusTask.execute();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.create_new:
+                Intent i = new Intent(MainActivity.this, CreateTaskActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     @Override
@@ -216,13 +237,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     /**
      * Reauest a credit to the server
      *
      * @param punition
      */
     void requestServerPunition(int punition) {
-        PunitionTask puntionTask = new PunitionTask(MainActivity.this,punition);
+        PunitionTask puntionTask = new PunitionTask(MainActivity.this, punition);
         enterPin(puntionTask);
     }
 
@@ -259,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setTodos(List<Todo> todos) {
-        ListAdapter listAdapter = new TodosAdapter(todos,this,listTodos);
+        ListAdapter listAdapter = new TodosAdapter(todos, this, listTodos);
         listTodos.setAdapter(listAdapter);
 
     }
