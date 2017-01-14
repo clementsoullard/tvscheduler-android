@@ -3,7 +3,7 @@ package com.clement.tvscheduler.task;
 import android.util.JsonReader;
 import android.util.Log;
 
-import com.clement.tvscheduler.MainActivity;
+import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.object.TVStatus;
 
 import java.io.IOException;
@@ -22,9 +22,12 @@ public class TVStatusTask extends BaseTask {
     TVStatus tvStatus;
     private String messageRetour;
 
+    MainActivity mainActivity;
+
     public TVStatusTask(MainActivity mainActivity) {
 
         super(mainActivity);
+        this.mainActivity=mainActivity;
     }
 
     @Override
@@ -66,7 +69,7 @@ public class TVStatusTask extends BaseTask {
                 mainActivity.setTvStatus("La télé est OFF");
             }
         } else {
-            mainActivity.showMessage("Impossible de se connecter au serveur");
+            connectedActivity.showMessage("Impossible de se connecter au serveur");
         }
 
 

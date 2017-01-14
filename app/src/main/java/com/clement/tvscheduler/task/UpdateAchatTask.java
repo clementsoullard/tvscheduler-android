@@ -2,8 +2,9 @@ package com.clement.tvscheduler.task;
 
 import android.util.Log;
 
+import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
-import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.object.Achat;
 
 import org.json.JSONObject;
 
@@ -15,26 +16,26 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * Created by Clément on 09/07/2016.
  */
-public class UpdateTodoTask extends BaseTask {
+public class UpdateAchatTask extends BaseTask {
 
 
     private String messageRetour;
 
     private String baserUrl;
 
-    private Todo todo;
+    private Achat achat;
 
 
-    public UpdateTodoTask(MainActivity mainActivity, Todo todo) {
-        super(mainActivity);
-        this.todo=todo;
+    public UpdateAchatTask(ListeCourseActivity listeCourseActivity, Achat achat) {
+        super(listeCourseActivity);
+        this.achat =achat;
 
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/task/"+todo.getId());
+            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/achat/"+ achat.getId());
             urlConnection.setRequestMethod("PATCH");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -46,8 +47,8 @@ public class UpdateTodoTask extends BaseTask {
              */
 
          JSONObject root = new JSONObject();
-            root.put("id", todo.getId());
-            root.put("done", todo.getDone());
+            root.put("id", achat.getId());
+            root.put("done", achat.getDone());
             String str = root.toString();
             byte[] outputBytes = str.getBytes("UTF-8");
             OutputStream os = urlConnection.getOutputStream();

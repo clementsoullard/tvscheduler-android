@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.clement.tvscheduler.MainActivity;
+import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.task.BaseTask;
 

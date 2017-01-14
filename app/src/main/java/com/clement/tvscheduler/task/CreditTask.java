@@ -2,7 +2,7 @@ package com.clement.tvscheduler.task;
 
 import android.util.Log;
 
-import com.clement.tvscheduler.MainActivity;
+import com.clement.tvscheduler.activity.MainActivity;
 
 import java.net.HttpURLConnection;
 
@@ -43,6 +43,6 @@ public class CreditTask extends BaseTask {
 
     @Override
     protected void onPostExecute(Long aLong) {
-        mainActivity.showMessage(messageRetour);
+        connectedActivity.showMessage(messageRetour);
     }
 }

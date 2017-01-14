@@ -1,4 +1,4 @@
-package com.clement.tvscheduler;
+package com.clement.tvscheduler.activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.object.Todo;
 import com.clement.tvscheduler.task.BaseTask;

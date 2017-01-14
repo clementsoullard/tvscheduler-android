@@ -7,7 +7,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.clement.tvscheduler.MainActivity;
+import com.clement.tvscheduler.activity.ConnectedActivity;
+import com.clement.tvscheduler.activity.MainActivity;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -30,10 +31,11 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
     public static final String HTTP_RESEAU_INET = "https://www.cesarsuperstar.com/";
 
     static SSLContext context;
-    protected MainActivity mainActivity;
 
-    public BaseTask(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    protected ConnectedActivity connectedActivity;
+
+    public BaseTask(ConnectedActivity connectedActivity) {
+        this.connectedActivity = connectedActivity;
     }
 
     /**
@@ -45,7 +47,7 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
         if (context == null) {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             HttpsURLConnection.setDefaultHostnameVerifier(new NullHostnameVerifier());
-            AssetManager assetManager = mainActivity.getAssets();
+            AssetManager assetManager = connectedActivity.getAssets();
             InputStream caInput = assetManager.open("raspberrypi.crt");
             Certificate ca;
             try {
@@ -81,7 +83,7 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
     }
 
     protected String getBaseURL() {
-        ConnectivityManager cm = (ConnectivityManager) mainActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) connectedActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         int netType = info.getType();
         Log.i(MainActivity.TAG, "NET Type " + netType + "  " + ConnectivityManager.TYPE_MOBILE + "  " + ConnectivityManager.TYPE_MOBILE_DUN + "  " + ConnectivityManager.TYPE_WIFI + " " + info.getExtraInfo() + " " + info.getSubtypeName());

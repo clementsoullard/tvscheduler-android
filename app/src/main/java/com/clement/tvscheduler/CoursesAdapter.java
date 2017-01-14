@@ -11,26 +11,28 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
-import com.clement.tvscheduler.object.Todo;
-import com.clement.tvscheduler.task.UpdateTodoTask;
+import com.clement.tvscheduler.object.Achat;
+import com.clement.tvscheduler.task.UpdateAchatTask;
 
 import java.util.List;
 
 /**
  * Created by cleme on 30/10/2016.
  */
-public class TodosAdapter implements ListAdapter {
+public class CoursesAdapter implements ListAdapter {
 
-    private List<Todo> todos;
+    List<Achat> achats;
 
-    private MainActivity mainActivity;
-    private ListView listViewTodos;
+    ListeCourseActivity listeCourseActivity;
 
-    public TodosAdapter(List<Todo> todos, MainActivity mainActivity, ListView parentView) {
-        this.todos = todos;
-        this.mainActivity = mainActivity;
-        this.listViewTodos = parentView;
+    ListView listView;
+
+    public CoursesAdapter(List<Achat> achats, ListeCourseActivity listeCourseActivity, ListView parentView) {
+        this.achats = achats;
+        this.listeCourseActivity = listeCourseActivity;
+        this.listView = parentView;
     }
 
     @Override
@@ -55,12 +57,12 @@ public class TodosAdapter implements ListAdapter {
 
     @Override
     public int getCount() {
-        return todos.size();
+        return achats.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return todos.get(position);
+        return achats.get(position);
     }
 
     @Override
@@ -77,7 +79,7 @@ public class TodosAdapter implements ListAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView;
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mainActivity
+            LayoutInflater inflater = (LayoutInflater) listeCourseActivity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.todo_item, null);
         } else {
@@ -85,17 +87,17 @@ public class TodosAdapter implements ListAdapter {
         }
 
         TextView textView = (TextView) rowView.findViewById(R.id.label);
-        textView.setText(todos.get(position).getName());
-        final Todo todo = todos.get(position);
+        textView.setText(achats.get(position).getName());
+        final Achat achat = achats.get(position);
         final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
-        checkBox.setChecked(todo.getDone());
+        checkBox.setChecked(achat.getDone());
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                todo.setDone(checkBox.isChecked());
-                UpdateTodoTask updateTodoTask=new UpdateTodoTask(mainActivity,todo);
-                updateTodoTask.execute();
-                Log.i(MainActivity.TAG, "Click sur la tâche " + todo.getId());
+                achat.setDone(checkBox.isChecked());
+                UpdateAchatTask updateAchatTask=new UpdateAchatTask(listeCourseActivity,achat);
+                updateAchatTask.execute();
+                Log.i(MainActivity.TAG, "Click sur la tâche " + achat.getId());
             }
         });
 
@@ -109,11 +111,11 @@ public class TodosAdapter implements ListAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return todos.size();
+        return achats.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return todos.isEmpty();
+        return achats.isEmpty();
     }
 }

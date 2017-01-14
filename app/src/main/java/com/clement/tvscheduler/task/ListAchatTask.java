@@ -4,8 +4,9 @@ import android.util.JsonReader;
 import android.util.JsonToken;
 import android.util.Log;
 
+import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
-import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.object.Achat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,23 +18,25 @@ import java.util.List;
 /**
  * Created by Clément on 09/07/2016.
  */
-public class ListTodoTask extends BaseTask {
+public class ListAchatTask extends BaseTask {
 
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    List<Todo> todos;
-    private String messageRetour;
-    MainActivity mainActivity;
+    List<Achat> achats;
 
-    public ListTodoTask(MainActivity mainActivity) {
-        super(mainActivity);
-        this.mainActivity = mainActivity;
+    ListeCourseActivity listeCourseActivity;
+
+    private String messageRetour;
+
+    public ListAchatTask(ListeCourseActivity listeCourseActivity) {
+        super(listeCourseActivity);
+        this.listeCourseActivity = listeCourseActivity;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
             Log.i(MainActivity.TAG, "Execution " + this.getClass());
-            InputStream is = getHttpUrlConnection("/tvscheduler/today-tasks").getInputStream();
+            InputStream is = getHttpUrlConnection("/tvscheduler/ws-active-achat").getInputStream();
             readJsonStream(is);
             messageRetour = "Succès";
 
@@ -49,10 +52,10 @@ public class ListTodoTask extends BaseTask {
     @Override
     protected void onPostExecute(Long aLong) {
         Log.i(MainActivity.TAG, "Taches retournées avec succès");
-        for (Todo todo : todos) {
-            Log.i(MainActivity.TAG, "Tache: " + todo.getName());
+        for (Achat achat : achats) {
+            Log.i(MainActivity.TAG, "Tache: " + achat.getName());
         }
-        mainActivity.setTodos(todos);
+        listeCourseActivity.setAchats(achats);
 
     }
 
@@ -61,7 +64,7 @@ public class ListTodoTask extends BaseTask {
      * @return
      * @throws IOException
      */
-    public List<Todo> readJsonStream(InputStream in) throws IOException {
+    public List<Achat> readJsonStream(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
 
@@ -78,20 +81,20 @@ public class ListTodoTask extends BaseTask {
      * @return
      * @throws IOException
      */
-    public List<Todo> readTodos(JsonReader reader) throws IOException {
+    public List<Achat> readTodos(JsonReader reader) throws IOException {
         Log.d(MainActivity.TAG, "Decryptage des Todo du jour");
-        todos = new ArrayList<Todo>();
+        achats = new ArrayList<Achat>();
 
         reader.beginArray();
         while (reader.hasNext()) {
-            Todo todo = readTodo(reader);
-            todos.add(todo);
+            Achat achat = readTodo(reader);
+            achats.add(achat);
         }
-        return todos;
+        return achats;
     }
 
-    private Todo readTodo(JsonReader reader) throws IOException {
-        Todo todo = new Todo();
+    private Achat readTodo(JsonReader reader) throws IOException {
+        Achat todo = new Achat();
         reader.beginObject();
         String name = null;
         String id = null;
@@ -106,7 +109,7 @@ public class ListTodoTask extends BaseTask {
 
             if (look == JsonToken.NULL) {
                 reader.skipValue();
-            } else if (nameJson.equals("taskName")) {
+            } else if (nameJson.equals("name")) {
                 name = reader.nextString();
             } else if (nameJson.equals("done")) {
                 done = reader.nextBoolean();
@@ -114,8 +117,6 @@ public class ListTodoTask extends BaseTask {
                 id = reader.nextString();
             } else if (nameJson.equals("date")) {
                 date = reader.nextString();
-            } else if (nameJson.equals("owner")) {
-                owner = reader.nextString();
             } else {
                 reader.skipValue();
             }

@@ -5,4 +5,6 @@
     <string name="cancel">Annuler</string>
     <string name="create_new" >Créer tâche</string>
     <string name="create_task_activity_child" >Create Task</string>
+    <string name="courses">Liste de Course</string>
+    <string name="liste_courses_activity_child">Liste Course</string>
 </resources>

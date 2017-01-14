@@ -1,9 +1,9 @@
-package com.clement.tvscheduler;
+package com.clement.tvscheduler.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.clement.tvscheduler.R;
+import com.clement.tvscheduler.TodosAdapter;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.CreditTask;
@@ -34,7 +36,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ConnectedActivity {
 
     public final static String TAG = "MainActivity";
 
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         datFormatSimple = new SimpleDateFormat("EEE dd, HH:mm", Locale.FRANCE);
         datFormatSimple.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
     }
+
 
     DecimalFormat midPinFormat = new DecimalFormat("00");
 
@@ -94,9 +97,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i;
         switch (item.getItemId()) {
             case R.id.create_new:
-                Intent i = new Intent(MainActivity.this, CreateTaskActivity.class);
+                i = new Intent(MainActivity.this, CreateTaskActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.liste_course:
+                i = new Intent(MainActivity.this, ListeCourseActivity.class);
                 startActivity(i);
                 return true;
             default:
