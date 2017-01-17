@@ -107,9 +107,13 @@ public class TodosAdapter implements ListAdapter {
         return 0;
     }
 
+    /**
+     * Returns the number of different biew in the list (In case of similar element this is 1
+     * @return
+     */
     @Override
     public int getViewTypeCount() {
-        return todos.size();
+        return 1;
     }
 
     @Override

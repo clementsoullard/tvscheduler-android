@@ -28,10 +28,42 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             tools:text="Liste de course" />
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/achat_ajout_edt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:text=""
+                />
+
+            <Button
+                android:id="@+id/achat_ajout_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ajout" />
+
+        </LinearLayout>
+
         <ListView
             android:id="@+id/list_courses_lst"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></ListView>
+
+        <TextView
+            android:id="@+id/empty_courses_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pas de courses à faire"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Liste de course" />
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

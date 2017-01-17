@@ -28,14 +28,14 @@ public class UpdateAchatTask extends BaseTask {
 
     public UpdateAchatTask(ListeCourseActivity listeCourseActivity, Achat achat) {
         super(listeCourseActivity);
-        this.achat =achat;
+        this.achat = achat;
 
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/achat/"+ achat.getId());
+            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/achat/"+achat.getId());
             urlConnection.setRequestMethod("PATCH");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -46,7 +46,7 @@ public class UpdateAchatTask extends BaseTask {
              * JSON
              */
 
-         JSONObject root = new JSONObject();
+            JSONObject root = new JSONObject();
             root.put("id", achat.getId());
             root.put("done", achat.getDone());
             String str = root.toString();
@@ -59,9 +59,9 @@ public class UpdateAchatTask extends BaseTask {
 
 
             if (responseCode == HttpsURLConnection.HTTP_NO_CONTENT) {
-                Log.e(MainActivity.TAG, "14 - HTTP_OK");
+                Log.i(MainActivity.TAG, "14 - HTTP_OK pour id " + achat.getId());
             } else {
-                Log.e(MainActivity.TAG, responseCode + "  - False - HTTP_OK");
+                Log.e(MainActivity.TAG, "Retour " + responseCode);
                 messageRetour = "Service non disponible";
             }
             return 0L;

@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,6 +26,8 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
     public final static String TAG = "MainActivity";
 
     private ListView listViewAchats;
+    private Button achatAjoutBtn;
+    private EditText achatAjoutEdt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,15 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
     public void setAchats(List<Achat> achats) {
         ListAdapter listAdapter = new CoursesAdapter(achats, this, listViewAchats);
         listViewAchats.setAdapter(listAdapter);
+        listViewAchats.setEmptyView(findViewById(R.id.empty_courses_view));
+        achatAjoutBtn = (Button) findViewById(R.id.achat_ajout_btn);
+        achatAjoutEdt = (EditText) findViewById(R.id.achat_ajout_edt);
+        achatAjoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Click sur le bouton ajout");
+            }
+        });
     }
 
     /**

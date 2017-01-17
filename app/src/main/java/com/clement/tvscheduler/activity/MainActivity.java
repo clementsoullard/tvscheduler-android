@@ -2,7 +2,6 @@ package com.clement.tvscheduler.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
 
     private TextView consumedTodayView;
 
-    private ListView listTodos;
+    private ListView listViewTodos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
         nextCreditView = (TextView) findViewById(R.id.nextCredit_view);
         consumedTodayView = (TextView) findViewById(R.id.consumedToday_view);
         tvStatusView = (TextView) findViewById(R.id.tvStatus_view);
-        listTodos = (ListView) findViewById(R.id.listTodos);
+        listViewTodos = (ListView) findViewById(R.id.listTodos);
 
         tvOn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,8 +294,10 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
 
 
     public void setTodos(List<Todo> todos) {
-        ListAdapter listAdapter = new TodosAdapter(todos, this, listTodos);
-        listTodos.setAdapter(listAdapter);
+        ListAdapter listAdapter = new TodosAdapter(todos, this, listViewTodos);
+        listViewTodos.setAdapter(listAdapter);
+        listViewTodos.setEmptyView(findViewById(R.id.empty_todos_view));
+
 
     }
 

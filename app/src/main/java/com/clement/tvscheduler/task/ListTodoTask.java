@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class ListTodoTask extends BaseTask {
 
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    List<Todo> todos;
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private List<Todo> todos;
     private String messageRetour;
     MainActivity mainActivity;
 
