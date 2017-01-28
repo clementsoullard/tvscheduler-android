@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.clement.tvscheduler.CoursesAdapter;
 import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.object.Achat;
+import com.clement.tvscheduler.task.AddAchatTask;
 import com.clement.tvscheduler.task.ListAchatTask;
 
 import java.util.List;
@@ -72,7 +73,7 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
      */
     private void init() {
         listViewAchats = (ListView) findViewById(R.id.list_courses_lst);
-
+        achatAjoutEdt = (EditText) findViewById(R.id.achat_ajout_edt);
     }
 
 
@@ -86,6 +87,10 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Click sur le bouton ajout");
+                Achat achat = new Achat();
+                achat.setName(achatAjoutEdt.getText().toString());
+                AddAchatTask addAchatTask = new AddAchatTask(ListeCourseActivity.this, achat);
+                addAchatTask.execute();
             }
         });
     }
@@ -101,5 +106,15 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
         toast.show();
     }
 
+    public void achatEnregistre() {
+        ListAchatTask listAchatTask = new ListAchatTask(this);
+        listAchatTask.execute();
+        achatAjoutEdt.setText("");
+    }
 
+    public void achatTermine() {
+        ListAchatTask listAchatTask = new ListAchatTask(this);
+        listAchatTask.execute();
+    }
 }
+
