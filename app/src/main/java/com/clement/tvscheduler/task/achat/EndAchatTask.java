@@ -1,10 +1,11 @@
-package com.clement.tvscheduler.task;
+package com.clement.tvscheduler.task.achat;
 
 import android.util.Log;
 
 import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.object.Achat;
+import com.clement.tvscheduler.task.BaseTask;
 
 import org.json.JSONObject;
 

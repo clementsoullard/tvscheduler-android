@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.object.Achat;
-import com.clement.tvscheduler.task.EndAchatTask;
-import com.clement.tvscheduler.task.UpdateAchatTask;
+import com.clement.tvscheduler.task.achat.EndAchatTask;
+import com.clement.tvscheduler.task.achat.UpdateAchatTask;
 
 import java.util.List;
 

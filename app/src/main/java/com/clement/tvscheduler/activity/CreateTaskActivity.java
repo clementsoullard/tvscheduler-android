@@ -1,42 +1,30 @@
 package com.clement.tvscheduler.activity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.EditText;
 
 import com.clement.tvscheduler.R;
-import com.clement.tvscheduler.dialog.PinDialog;
+import com.clement.tvscheduler.object.Achat;
 import com.clement.tvscheduler.object.Todo;
-import com.clement.tvscheduler.task.BaseTask;
-import com.clement.tvscheduler.task.CreditTask;
-import com.clement.tvscheduler.task.ListTodoTask;
-import com.clement.tvscheduler.task.PunitionTask;
-import com.clement.tvscheduler.task.TVStatusTask;
+import com.clement.tvscheduler.task.todo.AddTodoTask;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-public class CreateTaskActivity extends AppCompatActivity {
+public class CreateTaskActivity extends AppCompatActivity implements ConnectedActivity {
 
     public final static String TAG = "MainActivity";
+
+
+    private Button createTodoBtn;
+
+    private EditText todoAjoutEdt;
 
 
     @Override
@@ -48,7 +36,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         // my_child_toolbar is defined in the layout file
         Toolbar myChildToolbar =
                 (Toolbar) findViewById(R.id.my_child_toolbar);
-       // setSupportActionBar(myChildToolbar);
+        // setSupportActionBar(myChildToolbar);
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
@@ -78,7 +66,30 @@ public class CreateTaskActivity extends AppCompatActivity {
      * Intitialistation des composants
      */
     private void init() {
+        createTodoBtn = (Button) findViewById(R.id.todo_ajout_btn);
+
+        todoAjoutEdt = (EditText) findViewById(R.id.todo_ajout_edt);
+        createTodoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Todo todo = new Todo();
+                todo.setName(todoAjoutEdt.getText().toString());
+                AddTodoTask addTodoTask = new AddTodoTask(CreateTaskActivity.this, todo);
+                addTodoTask.execute();
+            }
+        });
     }
 
 
+    public void todoEnregistre() {
+        todoAjoutEdt.setText("");
+        Intent upIntent = NavUtils.getParentActivityIntent(this);
+        NavUtils.navigateUpTo(this, upIntent);
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+    }
 }

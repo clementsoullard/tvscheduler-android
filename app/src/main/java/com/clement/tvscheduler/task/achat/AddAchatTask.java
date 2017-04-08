@@ -1,72 +1,73 @@
-package com.clement.tvscheduler.task;
+package com.clement.tvscheduler.task.achat;
 
 import android.util.Log;
 
 import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.object.Achat;
+import com.clement.tvscheduler.task.BaseTask;
 
 import org.json.JSONObject;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
-import javax.net.ssl.HttpsURLConnection;
-
 /**
+ * This task is to add an achat to the liste de courses
  * Created by Clément on 09/07/2016.
  */
-public class UpdateAchatTask extends BaseTask {
+public class AddAchatTask extends BaseTask {
 
 
     private String messageRetour;
 
-    private String baserUrl;
-
     private Achat achat;
 
+    private ListeCourseActivity listeCourseActivity;
 
-    public UpdateAchatTask(ListeCourseActivity listeCourseActivity, Achat achat) {
-        super(listeCourseActivity);
+    /**
+     *
+     *
+     */
+
+    public AddAchatTask(ListeCourseActivity listCourseActivity, Achat achat) {
+        super(listCourseActivity);
+        this.listeCourseActivity = listCourseActivity;
         this.achat = achat;
-
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
+        if (achat.getName() == null || achat.getName().trim().length() == 0) {
+            messageRetour = "L'achat n'est pas renseigné";
+            return 0L;
+        }
+
         try {
-            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/achat/" + achat.getId());
-            urlConnection.setRequestMethod("PATCH");
+            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/ws-create-achat");
+            urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
             urlConnection.setRequestProperty("Content-Type", "application/json");
-
-            /*
+          /*
              * JSON
              */
-
             JSONObject root = new JSONObject();
-            root.put("id", achat.getId());
-            root.put("done", achat.getDone());
+            root.put("name", achat.getName());
             String str = root.toString();
             byte[] outputBytes = str.getBytes("UTF-8");
             OutputStream os = urlConnection.getOutputStream();
             os.write(outputBytes);
-            messageRetour = "Succès";
-
             int responseCode = urlConnection.getResponseCode();
-
-
-            if (responseCode == HttpsURLConnection.HTTP_NO_CONTENT) {
-                Log.i(MainActivity.TAG, "14 - HTTP_OK pour id " + achat.getId());
+            if (responseCode == 200) {
+                messageRetour = "Succès";
             } else {
-                Log.e(MainActivity.TAG, "Retour " + responseCode);
-                messageRetour = "Service non disponible";
+                messageRetour = "Erreur";
             }
             return 0L;
         } catch (Exception e) {
-            Log.e(MainActivity.TAG, e.getMessage(), e);
+            Log.e(MainActivity.TAG, "Erreur " + e.getMessage());
         }
         messageRetour = "Service non disponible";
         return null;
@@ -75,5 +76,7 @@ public class UpdateAchatTask extends BaseTask {
 
     @Override
     protected void onPostExecute(Long aLong) {
+        connectedActivity.showMessage(messageRetour);
+        listeCourseActivity.achatEnregistre();
     }
 }

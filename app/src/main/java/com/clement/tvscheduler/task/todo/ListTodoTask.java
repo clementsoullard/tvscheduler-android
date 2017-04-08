@@ -1,12 +1,12 @@
-package com.clement.tvscheduler.task;
+package com.clement.tvscheduler.task.todo;
 
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.util.Log;
 
-import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
-import com.clement.tvscheduler.object.Achat;
+import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.task.BaseTask;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,48 +18,46 @@ import java.util.List;
 /**
  * Created by Clément on 09/07/2016.
  */
-public class ListAchatTask extends BaseTask {
+public class ListTodoTask extends BaseTask {
 
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    List<Achat> achats;
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private List<Todo> todos;
+    private String messageRetour;
+    MainActivity mainActivity;
 
-    ListeCourseActivity listeCourseActivity;
-
-    //  private String messageRetour;
-
-    public ListAchatTask(ListeCourseActivity listeCourseActivity) {
-        super(listeCourseActivity);
-        this.listeCourseActivity = listeCourseActivity;
+    public ListTodoTask(MainActivity mainActivity) {
+        super(mainActivity);
+        this.mainActivity = mainActivity;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
             Log.i(MainActivity.TAG, "Execution " + this.getClass());
-            InputStream is = getHttpUrlConnection("/tvscheduler/ws-active-achat").getInputStream();
+            InputStream is = getHttpUrlConnection("/tvscheduler/today-tasks").getInputStream();
             readJsonStream(is);
-            //     messageRetour = "Succès";
+            messageRetour = "Succès";
 
             return 0L;
         } catch (Exception e) {
             Log.e(MainActivity.TAG, e.getMessage(), e);
         }
-        //       messageRetour = "Service non disponible";
+        messageRetour = "Service non disponible";
         return 0L;
     }
 
 
     @Override
     protected void onPostExecute(Long aLong) {
-        if (achats == null) {
-            listeCourseActivity.showMessage("Erreur au niveu du service");
+        Log.i(MainActivity.TAG, "Taches retournées avec succès");
+        if (todos == null) {
+            mainActivity.showMessage("Erreur de service");
             return;
         }
-        Log.i(MainActivity.TAG, "Achat retournés avec succès");
-        for (Achat achat : achats) {
-            Log.i(MainActivity.TAG, "Achat: " + achat.getName());
+        for (Todo todo : todos) {
+            Log.i(MainActivity.TAG, "Tache: " + todo.getName());
         }
-        listeCourseActivity.setAchats(achats);
+        mainActivity.setTodos(todos);
 
     }
 
@@ -68,11 +66,11 @@ public class ListAchatTask extends BaseTask {
      * @return
      * @throws IOException
      */
-    public List<Achat> readJsonStream(InputStream in) throws IOException {
+    public List<Todo> readJsonStream(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
 
-            return readAchats(reader);
+            return readTodos(reader);
         } finally {
             reader.close();
         }
@@ -85,20 +83,20 @@ public class ListAchatTask extends BaseTask {
      * @return
      * @throws IOException
      */
-    public List<Achat> readAchats(JsonReader reader) throws IOException {
+    public List<Todo> readTodos(JsonReader reader) throws IOException {
         Log.d(MainActivity.TAG, "Decryptage des Todo du jour");
-        achats = new ArrayList<Achat>();
+        todos = new ArrayList<Todo>();
 
         reader.beginArray();
         while (reader.hasNext()) {
-            Achat achat = readAchat(reader);
-            achats.add(achat);
+            Todo todo = readTodo(reader);
+            todos.add(todo);
         }
-        return achats;
+        return todos;
     }
 
-    private Achat readAchat(JsonReader reader) throws IOException {
-        Achat achat = new Achat();
+    private Todo readTodo(JsonReader reader) throws IOException {
+        Todo todo = new Todo();
         reader.beginObject();
         String name = null;
         String id = null;
@@ -113,7 +111,7 @@ public class ListAchatTask extends BaseTask {
 
             if (look == JsonToken.NULL) {
                 reader.skipValue();
-            } else if (nameJson.equals("name")) {
+            } else if (nameJson.equals("taskName")) {
                 name = reader.nextString();
             } else if (nameJson.equals("done")) {
                 done = reader.nextBoolean();
@@ -121,17 +119,19 @@ public class ListAchatTask extends BaseTask {
                 id = reader.nextString();
             } else if (nameJson.equals("date")) {
                 date = reader.nextString();
+            } else if (nameJson.equals("owner")) {
+                owner = reader.nextString();
             } else {
                 reader.skipValue();
             }
 
         }
         reader.endObject();
-        achat.setDone(done);
-        achat.setName(name);
-        achat.setId(id);
+        todo.setDone(done);
+        todo.setName(name);
+        todo.setId(id);
 
-        return achat;
+        return todo;
     }
 
 }

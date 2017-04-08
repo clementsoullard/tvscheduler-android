@@ -22,7 +22,7 @@ import com.clement.tvscheduler.TodosAdapter;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.CreditTask;
-import com.clement.tvscheduler.task.ListTodoTask;
+import com.clement.tvscheduler.task.todo.ListTodoTask;
 import com.clement.tvscheduler.task.PunitionTask;
 import com.clement.tvscheduler.task.TVStatusTask;
 import com.clement.tvscheduler.object.Todo;

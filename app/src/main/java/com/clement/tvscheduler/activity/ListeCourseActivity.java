@@ -17,8 +17,8 @@ import android.widget.Toast;
 import com.clement.tvscheduler.CoursesAdapter;
 import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.object.Achat;
-import com.clement.tvscheduler.task.AddAchatTask;
-import com.clement.tvscheduler.task.ListAchatTask;
+import com.clement.tvscheduler.task.achat.AddAchatTask;
+import com.clement.tvscheduler.task.achat.ListAchatTask;
 
 import java.util.List;
 

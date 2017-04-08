@@ -15,12 +15,42 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:text="titre"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        tools:text="Salut ma crotte" />
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Créer une tâche"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Création de tâches" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/todo_ajout_edt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:text="" />
+
+            <Button
+                android:id="@+id/todo_ajout_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ajout" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

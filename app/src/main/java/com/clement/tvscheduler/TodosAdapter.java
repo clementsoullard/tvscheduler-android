@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.object.Todo;
-import com.clement.tvscheduler.task.UpdateTodoTask;
+import com.clement.tvscheduler.task.todo.UpdateTodoTask;
 
 import java.util.List;
 

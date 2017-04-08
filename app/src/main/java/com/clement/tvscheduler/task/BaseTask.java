@@ -28,7 +28,7 @@ import javax.net.ssl.TrustManagerFactory;
 public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
 
     public static final String HTTP_RESEAU_LOCAL = "http://192.168.1.29:8080/";
- //   public static final String HTTP_RESEAU_LOCAL = "http://192.168.1.32/";
+  // public static final String HTTP_RESEAU_LOCAL = "http://raspberrypi/";
     public static final String HTTP_RESEAU_INET = "https://www.cesarsuperstar.com/";
 
     static SSLContext context;
