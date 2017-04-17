@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.clement.tvscheduler.R;
+import com.clement.tvscheduler.TVSchedulerConstants;
 import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.object.Achat;
@@ -27,8 +28,6 @@ import java.util.List;
  * Created by cleme on 30/10/2016.
  */
 public class CoursesAdapter implements ListAdapter {
-
-    private final String DEBUG_TAG = "Gesture";
 
     private List<Achat> achats;
 
@@ -103,7 +102,7 @@ public class CoursesAdapter implements ListAdapter {
 
                         switch (action) {
                             case (MotionEvent.ACTION_DOWN):
-                                Log.d(DEBUG_TAG, "Action was DOWN in " + position);
+                                Log.d(TVSchedulerConstants.DEBUG_TAG, "Action was DOWN in " + position);
                                 positionStartSwiping = position;
                                 positionStartSwipingX = event.getX();
 
@@ -112,23 +111,23 @@ public class CoursesAdapter implements ListAdapter {
                                 //     Log.d(DEBUG_TAG, "Action was MOVE for  " + position + " at X=" + event.getX());
                                 return true;
                             case (MotionEvent.ACTION_UP):
-                                Log.d(DEBUG_TAG, "Action was UP in " + position);
+                                Log.d(TVSchedulerConstants.DEBUG_TAG, "Action was UP in " + position);
                                 if (position == positionStartSwiping) {
                                     if (event.getX() - positionStartSwipingX > 0) {
-                                        Log.d(DEBUG_TAG, "The swipe was done left to right");
+                                        Log.d(TVSchedulerConstants.DEBUG_TAG, "The swipe was done left to right");
                                         Achat achat = achats.get(position);
-                                        Log.d(DEBUG_TAG, "Suppression de " + achat.getName());
+                                        Log.d(TVSchedulerConstants.DEBUG_TAG, "Suppression de " + achat.getName());
                                         listeCourseActivity.askConfirmationBeforeRemoving(achat.getId(), achat.getName());
                                     }
                                 }
                                 return true;
                             case (MotionEvent.ACTION_CANCEL):
-                                Log.d(DEBUG_TAG, "Action was CANCEL in " + position);
+                                Log.d(TVSchedulerConstants.DEBUG_TAG, "Action was CANCEL in " + position);
                                 /** In case the swipe could not end, we reset the swipe*/
                                 positionStartSwiping = -1;
                                 return true;
                             case (MotionEvent.ACTION_OUTSIDE):
-                                Log.d(DEBUG_TAG, "Movement occurred outside bounds " +
+                                Log.d(TVSchedulerConstants.DEBUG_TAG, "Movement occurred outside bounds " +
                                         "of current screen element");
                                 /** In case the swipe could not end, we reset the swipe*/
                                 positionStartSwiping = -1;

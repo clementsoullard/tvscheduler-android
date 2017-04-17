@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.clement.tvscheduler.TVSchedulerConstants;
 import com.clement.tvscheduler.activity.ConnectedActivity;
 import com.clement.tvscheduler.activity.MainActivity;
 
@@ -27,9 +28,6 @@ import javax.net.ssl.TrustManagerFactory;
  */
 public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
 
-   public static final String HTTP_RESEAU_LOCAL = "http://192.168.1.29:8080/";
-  // public static final String HTTP_RESEAU_LOCAL = "http://raspberrypi/";
-    public static final String HTTP_RESEAU_INET = "https://www.cesarsuperstar.com/";
 
     static SSLContext context;
 
@@ -92,11 +90,11 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
             Log.i(MainActivity.TAG, "Network is ok");
             String extraInfo = info.getExtraInfo();
             if (extraInfo.contains("B1B6")) {
-                return HTTP_RESEAU_LOCAL;
+                return TVSchedulerConstants.HTTP_RESEAU_LOCAL;
             }
         }
         Log.i(MainActivity.TAG, " on WAN");
-        return HTTP_RESEAU_INET;
+        return TVSchedulerConstants.HTTP_RESEAU_INET;
 
 
     }

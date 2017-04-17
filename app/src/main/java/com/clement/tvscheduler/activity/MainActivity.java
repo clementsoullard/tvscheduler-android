@@ -1,9 +1,11 @@
 package com.clement.tvscheduler.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,10 +24,12 @@ import com.clement.tvscheduler.activity.adapter.TodosAdapter;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.CreditTask;
+import com.clement.tvscheduler.task.achat.RemoveAchatTask;
 import com.clement.tvscheduler.task.todo.ListTodoTask;
 import com.clement.tvscheduler.task.PunitionTask;
 import com.clement.tvscheduler.task.TVStatusTask;
 import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.task.todo.RemoveTodoTask;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -35,6 +39,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * The main display containing the essential feature to display
+ */
 public class MainActivity extends AppCompatActivity implements ConnectedActivity {
 
     public final static String TAG = "MainActivity";
@@ -119,6 +126,12 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
         Log.d(TAG, "Passage sur on resume");
         tvStatusTask.execute();
 
+        refreshTaskList();
+
+    }
+
+
+    public void refreshTaskList() {
         ListTodoTask listTodoTask = new ListTodoTask(this);
         listTodoTask.execute();
     }
@@ -297,8 +310,26 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
         ListAdapter listAdapter = new TodosAdapter(todos, this, listViewTodos);
         listViewTodos.setAdapter(listAdapter);
         listViewTodos.setEmptyView(findViewById(R.id.empty_todos_view));
+    }
 
-
+    /**
+     * This asks a confirmation before removing an item
+     *
+     * @param taskId
+     * @param achatName
+     */
+    public void askConfirmationBeforeRemoving(final String taskId, String achatName) {
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setTitle("Confirmation")
+                .setMessage("Etes vous sur de vouloir supprimer " + achatName + " ?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        RemoveTodoTask removeAchatTask = new RemoveTodoTask(MainActivity.this, taskId);
+                        removeAchatTask.execute();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null).show();
     }
 
 }

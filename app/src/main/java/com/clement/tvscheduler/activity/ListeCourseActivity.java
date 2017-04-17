@@ -160,7 +160,6 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).show();
-
     }
 
     /**

@@ -2,8 +2,10 @@ package com.clement.tvscheduler.activity.adapter;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -12,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.clement.tvscheduler.R;
+import com.clement.tvscheduler.TVSchedulerConstants;
 import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.object.Todo;
 import com.clement.tvscheduler.task.todo.UpdateTodoTask;
@@ -34,6 +37,11 @@ public class TodosAdapter implements ListAdapter {
         this.mainActivity = mainActivity;
         this.listViewTodos = parentView;
     }
+
+    static int positionStartSwiping = -1;
+
+    static float positionStartSwipingX = -1F;
+
 
     @Override
     public boolean areAllItemsEnabled() {
@@ -76,11 +84,53 @@ public class TodosAdapter implements ListAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View rowView;
+        final View rowView;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mainActivity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.todo_item, null);
+            rowView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int action = MotionEventCompat.getActionMasked(event);
+
+                    switch (action) {
+                        case (MotionEvent.ACTION_DOWN):
+                            Log.d(TVSchedulerConstants.DEBUG_TAG, "Action was DOWN in " + position);
+                            positionStartSwiping = position;
+                            positionStartSwipingX = event.getX();
+
+                            return true;
+                        case (MotionEvent.ACTION_MOVE):
+                            //     Log.d(DEBUG_TAG, "Action was MOVE for  " + position + " at X=" + event.getX());
+                            return true;
+                        case (MotionEvent.ACTION_UP):
+                            Log.d(TVSchedulerConstants.DEBUG_TAG, "Action was UP in " + position);
+                            if (position == positionStartSwiping) {
+                                if (event.getX() - positionStartSwipingX > 0) {
+                                    Log.d(TVSchedulerConstants.DEBUG_TAG, "The swipe was done left to right");
+                                    Todo todo = todos.get(position);
+                                    Log.d(TVSchedulerConstants.DEBUG_TAG, "Suppression de " + todo.getName());
+                                    mainActivity.askConfirmationBeforeRemoving(todo.getId(), todo.getName());
+                                }
+                            }
+                            return true;
+                        case (MotionEvent.ACTION_CANCEL):
+                            Log.d(TVSchedulerConstants.DEBUG_TAG, "Action was CANCEL in " + position);
+                            /** In case the swipe could not end, we reset the swipe*/
+                            positionStartSwiping = -1;
+                            return true;
+                        case (MotionEvent.ACTION_OUTSIDE):
+                            Log.d(TVSchedulerConstants.DEBUG_TAG, "Movement occurred outside bounds " +
+                                    "of current screen element");
+                            /** In case the swipe could not end, we reset the swipe*/
+                            positionStartSwiping = -1;
+                            return true;
+                        default:
+                            return rowView.onTouchEvent(event);
+                    }
+                }
+            });
         } else {
             rowView = convertView;
         }
