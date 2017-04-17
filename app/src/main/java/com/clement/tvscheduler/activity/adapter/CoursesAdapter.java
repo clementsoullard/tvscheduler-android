@@ -1,9 +1,11 @@
-package com.clement.tvscheduler;
+package com.clement.tvscheduler.activity.adapter;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,6 +14,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.object.Achat;
@@ -25,11 +28,18 @@ import java.util.List;
  */
 public class CoursesAdapter implements ListAdapter {
 
+    private final String DEBUG_TAG = "Gesture";
+
     private List<Achat> achats;
 
     private ListeCourseActivity listeCourseActivity;
 
     private ListView listView;
+
+    static int positionStartSwiping = -1;
+
+    static float positionStartSwipingX = -1F;
+
 
     public CoursesAdapter(List<Achat> achats, ListeCourseActivity listeCourseActivity, ListView parentView) {
         this.achats = achats;
@@ -39,12 +49,12 @@ public class CoursesAdapter implements ListAdapter {
 
     @Override
     public boolean areAllItemsEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled(int position) {
-        return false;
+        return true;
     }
 
     @Override
@@ -54,7 +64,6 @@ public class CoursesAdapter implements ListAdapter {
 
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
-
     }
 
     @Override
@@ -80,13 +89,55 @@ public class CoursesAdapter implements ListAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         /** The layout of the item in the list*/
-        View rowView;
+        final View rowView;
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) listeCourseActivity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (position < achats.size()) {
                 rowView = inflater.inflate(R.layout.achat_item, null);
+                rowView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        int action = MotionEventCompat.getActionMasked(event);
+
+                        switch (action) {
+                            case (MotionEvent.ACTION_DOWN):
+                                Log.d(DEBUG_TAG, "Action was DOWN in " + position);
+                                positionStartSwiping = position;
+                                positionStartSwipingX = event.getX();
+
+                                return true;
+                            case (MotionEvent.ACTION_MOVE):
+                                //     Log.d(DEBUG_TAG, "Action was MOVE for  " + position + " at X=" + event.getX());
+                                return true;
+                            case (MotionEvent.ACTION_UP):
+                                Log.d(DEBUG_TAG, "Action was UP in " + position);
+                                if (position == positionStartSwiping) {
+                                    if (event.getX() - positionStartSwipingX > 0) {
+                                        Log.d(DEBUG_TAG, "The swipe was done left to right");
+                                        Achat achat = achats.get(position);
+                                        Log.d(DEBUG_TAG, "Suppression de " + achat.getName());
+                                        listeCourseActivity.askConfirmationBeforeRemoving(achat.getId(), achat.getName());
+                                    }
+                                }
+                                return true;
+                            case (MotionEvent.ACTION_CANCEL):
+                                Log.d(DEBUG_TAG, "Action was CANCEL in " + position);
+                                /** In case the swipe could not end, we reset the swipe*/
+                                positionStartSwiping = -1;
+                                return true;
+                            case (MotionEvent.ACTION_OUTSIDE):
+                                Log.d(DEBUG_TAG, "Movement occurred outside bounds " +
+                                        "of current screen element");
+                                /** In case the swipe could not end, we reset the swipe*/
+                                positionStartSwiping = -1;
+                                return true;
+                            default:
+                                return rowView.onTouchEvent(event);
+                        }
+                    }
+                });
             } else {
                 rowView = inflater.inflate(R.layout.end_achat_item, null);
             }

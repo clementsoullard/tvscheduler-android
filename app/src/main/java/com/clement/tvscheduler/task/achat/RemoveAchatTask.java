@@ -4,24 +4,20 @@ import android.util.Log;
 
 import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.MainActivity;
-import com.clement.tvscheduler.object.Achat;
 import com.clement.tvscheduler.task.BaseTask;
 
-import org.json.JSONObject;
-
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
 /**
- * This task is to add an achat to the liste de courses
+ * This task is to remove an achat to the liste de courses
  * Created by Clément on 09/07/2016.
  */
-public class AddAchatTask extends BaseTask {
+public class RemoveAchatTask extends BaseTask {
 
 
     private String messageRetour;
 
-    private Achat achat;
+    private String achatId;
 
     private ListeCourseActivity listeCourseActivity;
 
@@ -30,37 +26,24 @@ public class AddAchatTask extends BaseTask {
      *
      */
 
-    public AddAchatTask(ListeCourseActivity listCourseActivity, Achat achat) {
+    public RemoveAchatTask(ListeCourseActivity listCourseActivity, String achatId) {
         super(listCourseActivity);
         this.listeCourseActivity = listCourseActivity;
-        this.achat = achat;
+        this.achatId = achatId;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
-        if (achat.getName() == null || achat.getName().trim().length() == 0) {
-            messageRetour = "L'achat n'est pas renseigné";
-            return 0L;
-        }
 
         try {
-            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/ws-create-achat");
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setDoInput(true);
+            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/achat/" + achatId);
+            urlConnection.setRequestMethod("DELETE");
+            urlConnection.setDoInput(false);
             urlConnection.setDoOutput(true);
 
             urlConnection.setRequestProperty("Content-Type", "application/json");
-          /*
-             * JSON
-             */
-            JSONObject root = new JSONObject();
-            root.put("name", achat.getName());
-            String str = root.toString();
-            byte[] outputBytes = str.getBytes("UTF-8");
-            OutputStream os = urlConnection.getOutputStream();
-            os.write(outputBytes);
             int responseCode = urlConnection.getResponseCode();
-            if (responseCode == 200) {
+            if (responseCode == 204) {
                 messageRetour = "Succès";
             } else {
                 messageRetour = "Erreur";

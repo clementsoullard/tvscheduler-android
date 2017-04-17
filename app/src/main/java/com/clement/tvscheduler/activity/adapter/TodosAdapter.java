@@ -1,4 +1,4 @@
-package com.clement.tvscheduler;
+package com.clement.tvscheduler.activity.adapter;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -11,6 +11,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.activity.MainActivity;
 import com.clement.tvscheduler.object.Todo;
 import com.clement.tvscheduler.task.todo.UpdateTodoTask;
@@ -25,6 +26,7 @@ public class TodosAdapter implements ListAdapter {
     private List<Todo> todos;
 
     private MainActivity mainActivity;
+
     private ListView listViewTodos;
 
     public TodosAdapter(List<Todo> todos, MainActivity mainActivity, ListView parentView) {
@@ -35,12 +37,12 @@ public class TodosAdapter implements ListAdapter {
 
     @Override
     public boolean areAllItemsEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled(int position) {
-        return false;
+        return true;
     }
 
     @Override
@@ -50,7 +52,6 @@ public class TodosAdapter implements ListAdapter {
 
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
-
     }
 
     @Override
@@ -93,7 +94,7 @@ public class TodosAdapter implements ListAdapter {
             @Override
             public void onClick(View v) {
                 todo.setDone(checkBox.isChecked());
-                UpdateTodoTask updateTodoTask=new UpdateTodoTask(mainActivity,todo);
+                UpdateTodoTask updateTodoTask = new UpdateTodoTask(mainActivity, todo);
                 updateTodoTask.execute();
                 Log.i(MainActivity.TAG, "Click sur la tâche " + todo.getId());
             }
@@ -109,6 +110,7 @@ public class TodosAdapter implements ListAdapter {
 
     /**
      * Returns the number of different biew in the list (In case of similar element this is 1
+     *
      * @return
      */
     @Override

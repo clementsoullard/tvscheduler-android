@@ -19,16 +19,16 @@ import java.util.List;
 /**
  * Created by Clément on 09/07/2016.
  */
-public class ListAchatTask extends BaseTask {
+public class ListSuggestAchatTask extends BaseTask {
 
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    List<Achat> achats;
+
+    List<String> suggestions;
 
     ListeCourseActivity listeCourseActivity;
 
     //  private String messageRetour;
 
-    public ListAchatTask(ListeCourseActivity listeCourseActivity) {
+    public ListSuggestAchatTask(ListeCourseActivity listeCourseActivity) {
         super(listeCourseActivity);
         this.listeCourseActivity = listeCourseActivity;
     }
@@ -37,10 +37,8 @@ public class ListAchatTask extends BaseTask {
     protected Long doInBackground(Integer... params) {
         try {
             Log.i(MainActivity.TAG, "Execution " + this.getClass());
-            InputStream is = getHttpUrlConnection("/tvscheduler/ws-active-achat").getInputStream();
+            InputStream is = getHttpUrlConnection("tvscheduler/ws-suggest-achat").getInputStream();
             readJsonStream(is);
-            //     messageRetour = "Succès";
-
             return 0L;
         } catch (Exception e) {
             Log.e(MainActivity.TAG, e.getMessage(), e);
@@ -52,15 +50,15 @@ public class ListAchatTask extends BaseTask {
 
     @Override
     protected void onPostExecute(Long aLong) {
-        if (achats == null) {
+        if (suggestions == null) {
             listeCourseActivity.showMessage("Erreur du service");
             return;
         }
         Log.i(MainActivity.TAG, "Achat retournés avec succès");
-        for (Achat achat : achats) {
-            Log.i(MainActivity.TAG, "Achat: " + achat.getName());
+        for (String suggestion : suggestions) {
+            Log.i(MainActivity.TAG, "Achat: " + suggestion);
         }
-        listeCourseActivity.setAchats(achats);
+        listeCourseActivity.setSuggestAchats(suggestions);
 
     }
 
@@ -69,7 +67,7 @@ public class ListAchatTask extends BaseTask {
      * @return
      * @throws IOException
      */
-    public List<Achat> readJsonStream(InputStream in) throws IOException {
+    public List<String> readJsonStream(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
 
@@ -86,27 +84,21 @@ public class ListAchatTask extends BaseTask {
      * @return
      * @throws IOException
      */
-    public List<Achat> readAchats(JsonReader reader) throws IOException {
-        Log.d(MainActivity.TAG, "Decryptage des acahts en cours");
-        achats = new ArrayList<Achat>();
+    public List<String> readAchats(JsonReader reader) throws IOException {
+        Log.d(MainActivity.TAG, "Lecture des achats suggérés");
+        suggestions = new ArrayList<String>();
 
         reader.beginArray();
         while (reader.hasNext()) {
-            Achat achat = readAchat(reader);
-            achats.add(achat);
+            String suggestion = readAchat(reader);
+            suggestions.add(suggestion);
         }
-        return achats;
+        return suggestions;
     }
 
-    private Achat readAchat(JsonReader reader) throws IOException {
-        Achat achat = new Achat();
-        reader.beginObject();
+    private String readAchat(JsonReader reader) throws IOException {
         String name = null;
-        String id = null;
-        String date = null;
-        String owner = null;
-        Boolean done = null;
-
+        reader.beginObject();
 
         while (reader.hasNext()) {
             String nameJson = reader.nextName();
@@ -116,23 +108,16 @@ public class ListAchatTask extends BaseTask {
                 reader.skipValue();
             } else if (nameJson.equals("name")) {
                 name = reader.nextString();
-            } else if (nameJson.equals("done")) {
-                done = reader.nextBoolean();
-            } else if (nameJson.equals("idr")) {
-                id = reader.nextString();
-            } else if (nameJson.equals("date")) {
-                date = reader.nextString();
+                Log.d(MainActivity.TAG, "Lecture de " + name);
+
             } else {
                 reader.skipValue();
             }
 
         }
         reader.endObject();
-        achat.setDone(done);
-        achat.setName(name);
-        achat.setId(id);
 
-        return achat;
+        return name;
     }
 
 }

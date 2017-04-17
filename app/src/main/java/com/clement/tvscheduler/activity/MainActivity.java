@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clement.tvscheduler.R;
-import com.clement.tvscheduler.TodosAdapter;
+import com.clement.tvscheduler.activity.adapter.TodosAdapter;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.CreditTask;
