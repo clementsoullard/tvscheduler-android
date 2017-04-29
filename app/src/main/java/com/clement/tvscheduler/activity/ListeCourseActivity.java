@@ -27,7 +27,7 @@ import com.clement.tvscheduler.task.achat.RemoveAchatTask;
 
 import java.util.List;
 
-public class ListeCourseActivity extends AppCompatActivity implements ConnectedActivity {
+public class ListeCourseActivity extends AppCompatActivity implements ConnectedActivityI {
 
     public final static String TAG = "MainActivity";
 
@@ -56,8 +56,6 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
         // my_child_toolbar is defined in the layout file
         Toolbar myChildToolbar =
                 (Toolbar) findViewById(R.id.my_child_toolbar);
-        // setSupportActionBar(myChildToolbar);
-
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
 
@@ -73,7 +71,6 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -83,7 +80,6 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
         ListAchatTask listAchatTask = new ListAchatTask(this);
         listAchatTask.execute();
         getSuggest();
-
     }
 
     /**
@@ -92,7 +88,6 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
     private void init() {
         listViewAchats = (ListView) findViewById(R.id.list_courses_lst);
         achatAjoutEdt = (AutoCompleteTextView) findViewById(R.id.achat_ajout_edt);
-
     }
 
     /**
@@ -180,6 +175,9 @@ public class ListeCourseActivity extends AppCompatActivity implements ConnectedA
 
     }
 
+    /**
+     *
+     */
     public void achatTermine() {
         ListAchatTask listAchatTask = new ListAchatTask(this);
         listAchatTask.execute();

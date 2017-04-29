@@ -3,6 +3,7 @@ package com.clement.tvscheduler.task.todo;
 import android.util.Log;
 
 import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TaskListActivityI;
 import com.clement.tvscheduler.object.Todo;
 import com.clement.tvscheduler.task.BaseTask;
 
@@ -25,17 +26,17 @@ public class UpdateTodoTask extends BaseTask {
 
     private Todo todo;
 
-
-    public UpdateTodoTask(MainActivity mainActivity, Todo todo) {
+   
+    public UpdateTodoTask(TaskListActivityI mainActivity, Todo todo) {
         super(mainActivity);
-        this.todo=todo;
+        this.todo = todo;
 
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/task/"+todo.getId());
+            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/task/" + todo.getId());
             urlConnection.setRequestMethod("PATCH");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -46,7 +47,7 @@ public class UpdateTodoTask extends BaseTask {
              * JSON
              */
 
-         JSONObject root = new JSONObject();
+            JSONObject root = new JSONObject();
             root.put("id", todo.getId());
             root.put("done", todo.getDone());
             String str = root.toString();

@@ -3,6 +3,7 @@ package com.clement.tvscheduler.task.todo;
 import android.util.Log;
 
 import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TaskListActivityI;
 import com.clement.tvscheduler.task.BaseTask;
 
 import java.net.HttpURLConnection;
@@ -18,17 +19,17 @@ public class RemoveTodoTask extends BaseTask {
 
     private String taskId;
 
-    private MainActivity mainActivity;
+    private TaskListActivityI mainActivity;
 
     /**
      *
      *
      */
 
-    public RemoveTodoTask(MainActivity mainActivity, String achatId) {
+    public RemoveTodoTask(TaskListActivityI mainActivity, String id) {
         super(mainActivity);
         this.mainActivity = mainActivity;
-        this.taskId = achatId;
+        this.taskId = id;
     }
 
     @Override

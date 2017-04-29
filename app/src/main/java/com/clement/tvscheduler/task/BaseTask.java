@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.clement.tvscheduler.TVSchedulerConstants;
-import com.clement.tvscheduler.activity.ConnectedActivity;
+import com.clement.tvscheduler.activity.ConnectedActivityI;
 import com.clement.tvscheduler.activity.MainActivity;
 
 import java.io.InputStream;
@@ -31,9 +31,9 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
 
     static SSLContext context;
 
-    protected ConnectedActivity connectedActivity;
+    protected ConnectedActivityI connectedActivity;
 
-    public BaseTask(ConnectedActivity connectedActivity) {
+    public BaseTask(ConnectedActivityI connectedActivity) {
         this.connectedActivity = connectedActivity;
     }
 

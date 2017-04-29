@@ -6,7 +6,7 @@ import android.content.res.AssetManager;
  * Created by cleme on 14/01/2017.
  */
 
-public interface ConnectedActivity {
+public interface ConnectedActivityI {
 
 
     public AssetManager getAssets();

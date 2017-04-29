@@ -24,7 +24,6 @@ import com.clement.tvscheduler.activity.adapter.TodosAdapter;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.CreditTask;
-import com.clement.tvscheduler.task.achat.RemoveAchatTask;
 import com.clement.tvscheduler.task.todo.ListTodoTask;
 import com.clement.tvscheduler.task.PunitionTask;
 import com.clement.tvscheduler.task.TVStatusTask;
@@ -42,7 +41,7 @@ import java.util.TimeZone;
 /**
  * The main display containing the essential feature to display
  */
-public class MainActivity extends AppCompatActivity implements ConnectedActivity {
+public class MainActivity extends AppCompatActivity implements TaskListActivityI {
 
     public final static String TAG = "MainActivity";
 
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
 
     private TextView consumedTodayView;
 
-    private ListView listViewTodos;
+    private ListView listViewTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
         Intent i;
         switch (item.getItemId()) {
             case R.id.create_new:
-                i = new Intent(MainActivity.this, CreateTaskActivity.class);
+                i = new Intent(MainActivity.this, TasksActivity.class);
                 startActivity(i);
                 return true;
             case R.id.liste_course:
@@ -130,9 +129,11 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
 
     }
 
-
+    /**
+     * Refresh the tasks from the server
+     */
     public void refreshTaskList() {
-        ListTodoTask listTodoTask = new ListTodoTask(this);
+        ListTodoTask listTodoTask = new ListTodoTask(this,"César");
         listTodoTask.execute();
     }
 
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
         nextCreditView = (TextView) findViewById(R.id.nextCredit_view);
         consumedTodayView = (TextView) findViewById(R.id.consumedToday_view);
         tvStatusView = (TextView) findViewById(R.id.tvStatus_view);
-        listViewTodos = (ListView) findViewById(R.id.listTodos);
+        listViewTasks = (ListView) findViewById(R.id.listTodos);
 
         tvOn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,9 +308,10 @@ public class MainActivity extends AppCompatActivity implements ConnectedActivity
 
 
     public void setTodos(List<Todo> todos) {
-        ListAdapter listAdapter = new TodosAdapter(todos, this, listViewTodos);
-        listViewTodos.setAdapter(listAdapter);
-        listViewTodos.setEmptyView(findViewById(R.id.empty_todos_view));
+
+        ListAdapter listAdapter = new TodosAdapter(todos, MainActivity.this, listViewTasks);
+        listViewTasks.setAdapter(listAdapter);
+        listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
     }
 
     /**

@@ -50,6 +50,10 @@
                 android:text="Ajout" />
 
         </LinearLayout>
+
+        <ListView android:id="@+id/listTasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
     </LinearLayout>
 
 

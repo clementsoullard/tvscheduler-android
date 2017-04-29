@@ -2,11 +2,8 @@ package com.clement.tvscheduler.task.todo;
 
 import android.util.Log;
 
-import com.clement.tvscheduler.activity.ConnectedActivity;
-import com.clement.tvscheduler.activity.CreateTaskActivity;
-import com.clement.tvscheduler.activity.ListeCourseActivity;
+import com.clement.tvscheduler.activity.TasksActivity;
 import com.clement.tvscheduler.activity.MainActivity;
-import com.clement.tvscheduler.object.Achat;
 import com.clement.tvscheduler.object.Todo;
 import com.clement.tvscheduler.task.BaseTask;
 
@@ -26,14 +23,14 @@ public class AddTodoTask extends BaseTask {
 
     private Todo achat;
 
-    private CreateTaskActivity createTaskActivity;
+    private TasksActivity createTaskActivity;
 
     /**
      *
      *
      */
 
-    public AddTodoTask(CreateTaskActivity createTaskActivity, Todo todo) {
+    public AddTodoTask(TasksActivity createTaskActivity, Todo todo) {
         super(createTaskActivity);
         this.createTaskActivity = createTaskActivity;
         this.achat = todo;

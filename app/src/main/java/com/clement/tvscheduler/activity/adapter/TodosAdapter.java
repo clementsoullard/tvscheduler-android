@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.TVSchedulerConstants;
 import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TaskListActivityI;
 import com.clement.tvscheduler.object.Todo;
 import com.clement.tvscheduler.task.todo.UpdateTodoTask;
 
@@ -28,11 +29,11 @@ public class TodosAdapter implements ListAdapter {
 
     private List<Todo> todos;
 
-    private MainActivity mainActivity;
+    private TaskListActivityI mainActivity;
 
     private ListView listViewTodos;
 
-    public TodosAdapter(List<Todo> todos, MainActivity mainActivity, ListView parentView) {
+    public TodosAdapter(List<Todo> todos, TaskListActivityI mainActivity, ListView parentView) {
         this.todos = todos;
         this.mainActivity = mainActivity;
         this.listViewTodos = parentView;

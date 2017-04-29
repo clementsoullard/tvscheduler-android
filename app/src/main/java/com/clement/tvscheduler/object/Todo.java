@@ -6,14 +6,14 @@ import java.util.Date;
  * Created by cleme on 29/10/2016.
  */
 public class Todo {
-    String name;
 
-    String id;
+    private String name;
 
-    Boolean done;
+    private String id;
 
+    private Boolean done;
 
-   String owner;
+    private String owner;
 
     public void setDone(Boolean done) {
         this.done = done;
@@ -43,7 +43,7 @@ public class Todo {
         this.id = id;
     }
 
-     public String getOwner() {
+    public String getOwner() {
         return owner;
     }
 
