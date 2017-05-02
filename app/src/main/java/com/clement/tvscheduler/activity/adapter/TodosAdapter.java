@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.TVSchedulerConstants;
-import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TvPcActivity;
 import com.clement.tvscheduler.activity.TaskListActivityI;
-import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.object.Task;
 import com.clement.tvscheduler.task.todo.UpdateTodoTask;
 
 import java.util.List;
@@ -27,14 +27,14 @@ import java.util.List;
  */
 public class TodosAdapter implements ListAdapter {
 
-    private List<Todo> todos;
+    private List<Task> tasks;
 
     private TaskListActivityI mainActivity;
 
     private ListView listViewTodos;
 
-    public TodosAdapter(List<Todo> todos, TaskListActivityI mainActivity, ListView parentView) {
-        this.todos = todos;
+    public TodosAdapter(List<Task> tasks, TaskListActivityI mainActivity, ListView parentView) {
+        this.tasks = tasks;
         this.mainActivity = mainActivity;
         this.listViewTodos = parentView;
     }
@@ -65,12 +65,12 @@ public class TodosAdapter implements ListAdapter {
 
     @Override
     public int getCount() {
-        return todos.size();
+        return tasks.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return todos.get(position);
+        return tasks.get(position);
     }
 
     @Override
@@ -110,9 +110,9 @@ public class TodosAdapter implements ListAdapter {
                             if (position == positionStartSwiping) {
                                 if (event.getX() - positionStartSwipingX > 0) {
                                     Log.d(TVSchedulerConstants.DEBUG_TAG, "The swipe was done left to right");
-                                    Todo todo = todos.get(position);
-                                    Log.d(TVSchedulerConstants.DEBUG_TAG, "Suppression de " + todo.getName());
-                                    mainActivity.askConfirmationBeforeRemoving(todo.getId(), todo.getName());
+                                    Task task = tasks.get(position);
+                                    Log.d(TVSchedulerConstants.DEBUG_TAG, "Suppression de " + task.getName());
+                                    mainActivity.askConfirmationBeforeRemoving(task.getId(), task.getName());
                                 }
                             }
                             return true;
@@ -137,17 +137,17 @@ public class TodosAdapter implements ListAdapter {
         }
 
         TextView textView = (TextView) rowView.findViewById(R.id.label);
-        textView.setText(todos.get(position).getName());
-        final Todo todo = todos.get(position);
+        textView.setText(tasks.get(position).getName());
+        final Task task = tasks.get(position);
         final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
-        checkBox.setChecked(todo.getDone());
+        checkBox.setChecked(task.getDone());
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                todo.setDone(checkBox.isChecked());
-                UpdateTodoTask updateTodoTask = new UpdateTodoTask(mainActivity, todo);
+                task.setDone(checkBox.isChecked());
+                UpdateTodoTask updateTodoTask = new UpdateTodoTask(mainActivity, task);
                 updateTodoTask.execute();
-                Log.i(MainActivity.TAG, "Click sur la tâche " + todo.getId());
+                Log.i(TvPcActivity.TAG, "Click sur la tâche " + task.getId());
             }
         });
 
@@ -171,6 +171,6 @@ public class TodosAdapter implements ListAdapter {
 
     @Override
     public boolean isEmpty() {
-        return todos.isEmpty();
+        return tasks.isEmpty();
     }
 }

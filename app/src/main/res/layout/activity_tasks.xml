@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.clement.tvscheduler.activity.MainActivity">
+    tools:context="com.clement.tvscheduler.activity.TvPcActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+
             <EditText
                 android:id="@+id/todo_ajout_edt"
                 android:layout_width="wrap_content"
@@ -50,6 +51,36 @@
                 android:text="Ajout" />
 
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/labelPermanent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Temporaire"
+
+            tools:text="Temporaire" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/checkboxPermanennt" />
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/idOwnerRadioGroup" >
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="Home" android:id="@+id/idHomeRadio"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="César"  android:id="@+id/idCesarRadio"/>
+        </RadioGroup>
+    </LinearLayout>
+
+
 
         <ListView android:id="@+id/listTasks"
             android:layout_width="match_parent"

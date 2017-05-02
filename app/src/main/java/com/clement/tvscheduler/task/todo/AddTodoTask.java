@@ -3,8 +3,8 @@ package com.clement.tvscheduler.task.todo;
 import android.util.Log;
 
 import com.clement.tvscheduler.activity.TasksActivity;
-import com.clement.tvscheduler.activity.MainActivity;
-import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.activity.TvPcActivity;
+import com.clement.tvscheduler.object.Task;
 import com.clement.tvscheduler.task.BaseTask;
 
 import org.json.JSONObject;
@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
 /**
- * This task is to add an achat to the liste de courses
+ * This task is to add an task to the liste de courses
  * Created by Clément on 09/07/2016.
  */
 public class AddTodoTask extends BaseTask {
@@ -21,7 +21,7 @@ public class AddTodoTask extends BaseTask {
 
     private String messageRetour;
 
-    private Todo achat;
+    private Task task;
 
     private TasksActivity createTaskActivity;
 
@@ -30,10 +30,10 @@ public class AddTodoTask extends BaseTask {
      *
      */
 
-    public AddTodoTask(TasksActivity createTaskActivity, Todo todo) {
+    public AddTodoTask(TasksActivity createTaskActivity, Task task) {
         super(createTaskActivity);
         this.createTaskActivity = createTaskActivity;
-        this.achat = todo;
+        this.task = task;
     }
 
     @Override
@@ -48,8 +48,12 @@ public class AddTodoTask extends BaseTask {
           /*
              * JSON
              */
+
             JSONObject root = new JSONObject();
-            root.put("taskName", achat.getName());
+            root.put("taskName", task.getName());
+            root.put("owner", task.getOwner());
+            root.put("expireAtTheEndOfTheDay", !task.getPermanent());
+
             String str = root.toString();
             byte[] outputBytes = str.getBytes("UTF-8");
             OutputStream os = urlConnection.getOutputStream();
@@ -58,7 +62,7 @@ public class AddTodoTask extends BaseTask {
             messageRetour = "Succès";
             return 0L;
         } catch (Exception e) {
-            Log.e(MainActivity.TAG, "Erreur " + e.getMessage());
+            Log.e(TvPcActivity.TAG, "Erreur " + e.getMessage());
         }
         messageRetour = "Service non disponible";
         return null;

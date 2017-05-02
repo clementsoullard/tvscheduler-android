@@ -23,11 +23,12 @@ import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.activity.adapter.TodosAdapter;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
-import com.clement.tvscheduler.task.CreditTask;
+import com.clement.tvscheduler.task.tvpc.ChangeLoginAuthorizationTask;
+import com.clement.tvscheduler.task.tvpc.CreditTask;
 import com.clement.tvscheduler.task.todo.ListTodoTask;
-import com.clement.tvscheduler.task.PunitionTask;
-import com.clement.tvscheduler.task.TVStatusTask;
-import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.task.tvpc.PunitionTask;
+import com.clement.tvscheduler.task.tvpc.TVStatusTask;
+import com.clement.tvscheduler.object.Task;
 import com.clement.tvscheduler.task.todo.RemoveTodoTask;
 
 import java.text.DateFormat;
@@ -41,9 +42,9 @@ import java.util.TimeZone;
 /**
  * The main display containing the essential feature to display
  */
-public class MainActivity extends AppCompatActivity implements TaskListActivityI {
+public class TvPcActivity extends AppCompatActivity implements TaskListActivityI {
 
-    public final static String TAG = "MainActivity";
+    public final static String TAG = "TvPcActivity";
 
     public static final DateFormat datFormatSimple;
 
@@ -58,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
     private Button tvOn;
 
     private Button tvOff;
+
+    private Button tvOnPc;
+
+    private Button tvOffPc;
 
     private Button tvCredit30;
 
@@ -105,11 +110,11 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
         Intent i;
         switch (item.getItemId()) {
             case R.id.create_new:
-                i = new Intent(MainActivity.this, TasksActivity.class);
+                i = new Intent(TvPcActivity.this, TasksActivity.class);
                 startActivity(i);
                 return true;
             case R.id.liste_course:
-                i = new Intent(MainActivity.this, ListeCourseActivity.class);
+                i = new Intent(TvPcActivity.this, ListeCourseActivity.class);
                 startActivity(i);
                 return true;
             default:
@@ -133,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
      * Refresh the tasks from the server
      */
     public void refreshTaskList() {
-        ListTodoTask listTodoTask = new ListTodoTask(this,"César");
+        ListTodoTask listTodoTask = new ListTodoTask(this, "César");
         listTodoTask.execute();
     }
 
@@ -142,7 +147,9 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
      */
     private void init() {
         tvOn = (Button) findViewById(R.id.button_on);
+        tvOnPc = (Button) findViewById(R.id.button_onpc);
         tvOff = (Button) findViewById(R.id.button_off);
+        tvOffPc = (Button) findViewById(R.id.button_offpc);
         tvCredit30 = (Button) findViewById(R.id.button_30);
         tvCredit60 = (Button) findViewById(R.id.button_60);
         punition = (Button) findViewById(R.id.button_punition);
@@ -159,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Click sur TV ON");
-                requestServerCredit(-2);
+                creditTv(-2);
 
             }
         });
@@ -167,21 +174,35 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Click sur TV Off");
-                requestServerCredit(-1);
+                creditTv(-1);
+            }
+        });
+        tvOnPc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Click Enable Pc");
+                enableUser(true);
+            }
+        });
+        tvOffPc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Click diablse");
+                enableUser(false);
             }
         });
         tvCredit30.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Click sur TV 30");
-                requestServerCredit(1800);
+                creditTv(1800);
             }
         });
         tvCredit60.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Click sur TV 60");
-                requestServerCredit(3600);
+                creditTv(3600);
             }
         });
         punition.setOnClickListener(new View.OnClickListener() {
@@ -251,12 +272,22 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
      *
      * @param credit
      */
-    void requestServerCredit(int credit) {
+    void creditTv(int credit) {
         int netType;
-        CreditTask creditTask = new CreditTask(MainActivity.this, credit);
+        CreditTask creditTask = new CreditTask(TvPcActivity.this, credit);
         enterPin(creditTask);
     }
 
+    /**
+     * Enable or diable a user on a PC
+     *
+     * @param enable
+     */
+    void enableUser(boolean enable) {
+        int netType;
+        ChangeLoginAuthorizationTask creditTask = new ChangeLoginAuthorizationTask(TvPcActivity.this, enable);
+        enterPin(creditTask);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -271,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
      * @param punition
      */
     void requestServerPunition(int punition) {
-        PunitionTask puntionTask = new PunitionTask(MainActivity.this, punition);
+        PunitionTask puntionTask = new PunitionTask(TvPcActivity.this, punition);
         enterPin(puntionTask);
     }
 
@@ -282,34 +313,34 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
         Double d = Math.ceil(Math.random() * 100);
         int random = d.intValue();
         String midPin = midPinFormat.format(random);
-        PinDialog newFragment = new PinDialog();
-        newFragment.setMidPin(midPin);
-        newFragment.setBaseTask(asyncTask);
+        PinDialog pinFragment = new PinDialog();
+        pinFragment.setMidPin(midPin);
+        pinFragment.setTaskToExecuteAfterCorrectPin(asyncTask);
         FragmentManager fm = getSupportFragmentManager();
-        newFragment.show(fm, "pin");
+        pinFragment.show(fm, "pin");
     }
 
     /**
-     * This is a callback function after the right pin has been entered.
+     * This is a callback function after the correct pin has been entered.
      *
      * @param midPin
      * @param valueEntered
-     * @param asyncTask
+     * @param taskToExecuteAfterCorrectPin
      */
-    public void checkPin(String midPin, String valueEntered, BaseTask asyncTask) {
+    public void checkPin(String midPin, String valueEntered, BaseTask taskToExecuteAfterCorrectPin) {
         String expectedResult = "1" + midPin + "1";
         if (expectedResult.equals(valueEntered)) {
             Log.i(TAG, "La bonne valeur a ete entree");
-            asyncTask.execute();
+            taskToExecuteAfterCorrectPin.execute();
         } else {
             Log.i(TAG, "La mauvaise valeur a ete entree");
         }
     }
 
 
-    public void setTodos(List<Todo> todos) {
+    public void setTodos(List<Task> tasks) {
 
-        ListAdapter listAdapter = new TodosAdapter(todos, MainActivity.this, listViewTasks);
+        ListAdapter listAdapter = new TodosAdapter(tasks, TvPcActivity.this, listViewTasks);
         listViewTasks.setAdapter(listAdapter);
         listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
     }
@@ -327,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements TaskListActivityI
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        RemoveTodoTask removeAchatTask = new RemoveTodoTask(MainActivity.this, taskId);
+                        RemoveTodoTask removeAchatTask = new RemoveTodoTask(TvPcActivity.this, taskId);
                         removeAchatTask.execute();
                     }
                 })

@@ -4,9 +4,9 @@ import android.util.JsonReader;
 import android.util.JsonToken;
 import android.util.Log;
 
-import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TvPcActivity;
 import com.clement.tvscheduler.activity.TaskListActivityI;
-import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.object.Task;
 import com.clement.tvscheduler.task.BaseTask;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ListTodoTask extends BaseTask {
 
     private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    private List<Todo> todos;
+    private List<Task> tasks;
     private String messageRetour;
     private TaskListActivityI taskListActivity;
     private String taskOwner;
@@ -36,7 +36,7 @@ public class ListTodoTask extends BaseTask {
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            Log.i(MainActivity.TAG, "Execution " + this.getClass());
+            Log.i(TvPcActivity.TAG, "Execution " + this.getClass());
             String uri = "/tvscheduler/today-tasks";
             if (taskOwner.equals("home")) {
                 uri += "-home";
@@ -46,7 +46,7 @@ public class ListTodoTask extends BaseTask {
             messageRetour = "Succès";
             return 0L;
         } catch (Exception e) {
-            Log.e(MainActivity.TAG, e.getMessage(), e);
+            Log.e(TvPcActivity.TAG, e.getMessage(), e);
         }
         messageRetour = "Service non disponible";
         return 0L;
@@ -55,15 +55,15 @@ public class ListTodoTask extends BaseTask {
 
     @Override
     protected void onPostExecute(Long aLong) {
-        Log.i(MainActivity.TAG, "Taches retournées avec succès");
-        if (todos == null) {
+        Log.i(TvPcActivity.TAG, "Taches retournées avec succès");
+        if (tasks == null) {
             taskListActivity.showMessage("Erreur de service");
             return;
         }
-        for (Todo todo : todos) {
-            Log.i(MainActivity.TAG, "Tache: " + todo.getName());
+        for (Task task : tasks) {
+            Log.i(TvPcActivity.TAG, "Tache: " + task.getName());
         }
-        taskListActivity.setTodos(todos);
+        taskListActivity.setTodos(tasks);
 
     }
 
@@ -72,7 +72,7 @@ public class ListTodoTask extends BaseTask {
      * @return
      * @throws IOException
      */
-    public List<Todo> readJsonStream(InputStream in) throws IOException {
+    public List<Task> readJsonStream(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
 
@@ -89,20 +89,20 @@ public class ListTodoTask extends BaseTask {
      * @return
      * @throws IOException
      */
-    public List<Todo> readTodos(JsonReader reader) throws IOException {
-        Log.d(MainActivity.TAG, "Decryptage des Todo du jour");
-        todos = new ArrayList<Todo>();
+    public List<Task> readTodos(JsonReader reader) throws IOException {
+        Log.d(TvPcActivity.TAG, "Decryptage des Task du jour");
+        tasks = new ArrayList<Task>();
 
         reader.beginArray();
         while (reader.hasNext()) {
-            Todo todo = readTodo(reader);
-            todos.add(todo);
+            Task task = readTodo(reader);
+            tasks.add(task);
         }
-        return todos;
+        return tasks;
     }
 
-    private Todo readTodo(JsonReader reader) throws IOException {
-        Todo todo = new Todo();
+    private Task readTodo(JsonReader reader) throws IOException {
+        Task task = new Task();
         reader.beginObject();
         String name = null;
         String id = null;
@@ -133,11 +133,11 @@ public class ListTodoTask extends BaseTask {
 
         }
         reader.endObject();
-        todo.setDone(done);
-        todo.setName(name);
-        todo.setId(id);
+        task.setDone(done);
+        task.setName(name);
+        task.setId(id);
 
-        return todo;
+        return task;
     }
 
 }

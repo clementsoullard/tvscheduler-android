@@ -2,9 +2,9 @@ package com.clement.tvscheduler.task.todo;
 
 import android.util.Log;
 
-import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TvPcActivity;
 import com.clement.tvscheduler.activity.TaskListActivityI;
-import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.object.Task;
 import com.clement.tvscheduler.task.BaseTask;
 
 import org.json.JSONObject;
@@ -24,19 +24,19 @@ public class UpdateTodoTask extends BaseTask {
 
     private String baserUrl;
 
-    private Todo todo;
+    private Task task;
 
-   
-    public UpdateTodoTask(TaskListActivityI mainActivity, Todo todo) {
+
+    public UpdateTodoTask(TaskListActivityI mainActivity, Task task) {
         super(mainActivity);
-        this.todo = todo;
+        this.task = task;
 
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/task/" + todo.getId());
+            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/repository/task/" + task.getId());
             urlConnection.setRequestMethod("PATCH");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -48,8 +48,9 @@ public class UpdateTodoTask extends BaseTask {
              */
 
             JSONObject root = new JSONObject();
-            root.put("id", todo.getId());
-            root.put("done", todo.getDone());
+            root.put("id", task.getId());
+            root.put("done", task.getDone());
+            root.put("expireAtTheEndOfTheDay", !task.getPermanent());
             String str = root.toString();
             byte[] outputBytes = str.getBytes("UTF-8");
             OutputStream os = urlConnection.getOutputStream();
@@ -60,14 +61,14 @@ public class UpdateTodoTask extends BaseTask {
 
 
             if (responseCode == HttpsURLConnection.HTTP_NO_CONTENT) {
-                Log.e(MainActivity.TAG, "14 - HTTP_OK");
+                Log.e(TvPcActivity.TAG, "14 - HTTP_OK");
             } else {
-                Log.e(MainActivity.TAG, responseCode + "  - False - HTTP_OK");
+                Log.e(TvPcActivity.TAG, responseCode + "  - False - HTTP_OK");
                 messageRetour = "Service non disponible";
             }
             return 0L;
         } catch (Exception e) {
-            Log.e(MainActivity.TAG, e.getMessage(), e);
+            Log.e(TvPcActivity.TAG, e.getMessage(), e);
         }
         messageRetour = "Service non disponible";
         return null;

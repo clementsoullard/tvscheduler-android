@@ -12,13 +12,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 
 import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.activity.adapter.TodosAdapter;
-import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.object.Task;
 import com.clement.tvscheduler.task.todo.AddTodoTask;
 import com.clement.tvscheduler.task.todo.ListTodoTask;
 import com.clement.tvscheduler.task.todo.RemoveTodoTask;
@@ -30,11 +32,15 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
     public final static String TAG = "TasksActivity";
 
 
-    private Button createTodoBtn;
+    private Button createTaskBtn;
 
     private EditText todoAjoutEdt;
 
     private ListView listViewTasks;
+
+    private RadioGroup radioGrouOwner;
+
+    private CheckBox checkBoxPermanent;
 
 
     @Override
@@ -78,20 +84,32 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
      * Intitialistation des composants
      */
     private void init() {
-        createTodoBtn = (Button) findViewById(R.id.todo_ajout_btn);
+        createTaskBtn = (Button) findViewById(R.id.todo_ajout_btn);
 
         todoAjoutEdt = (EditText) findViewById(R.id.todo_ajout_edt);
-        createTodoBtn.setOnClickListener(new View.OnClickListener() {
+        createTaskBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Todo todo = new Todo();
-                todo.setName(todoAjoutEdt.getText().toString());
-                AddTodoTask addTodoTask = new AddTodoTask(TasksActivity.this, todo);
+                Task task = new Task();
+                task.setName(todoAjoutEdt.getText().toString());
+                task.setPermanent(checkBoxPermanent.isChecked());
+                Integer idSelectedOwned = radioGrouOwner.getCheckedRadioButtonId();
+                if (idSelectedOwned == R.id.idCesarRadio) {
+                    task.setOwner("César");
+                } else if (idSelectedOwned == R.id.idHomeRadio) {
+                    task.setOwner("Home");
+                } else {
+                    task.setOwner("Home");
+                }
+
+                AddTodoTask addTodoTask = new AddTodoTask(TasksActivity.this, task);
                 addTodoTask.execute();
             }
         });
 
         listViewTasks = (ListView) findViewById(R.id.listTasks);
+        radioGrouOwner = (RadioGroup) findViewById(R.id.idOwnerRadioGroup);
+        checkBoxPermanent = (CheckBox) findViewById(R.id.checkboxPermanennt);
 
     }
 
@@ -103,8 +121,8 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
 
     }
 
-    public void setTasks(List<Todo> todos) {
-        ListAdapter listAdapter = new TodosAdapter(todos, this, listViewTasks);
+    public void setTasks(List<Task> tasks) {
+        ListAdapter listAdapter = new TodosAdapter(tasks, this, listViewTasks);
         listViewTasks.setAdapter(listAdapter);
         listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
     }
@@ -137,8 +155,8 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
     }
 
     @Override
-    public void setTodos(List<Todo> todos) {
-        ListAdapter listAdapter = new TodosAdapter(todos, this, listViewTasks);
+    public void setTodos(List<Task> tasks) {
+        ListAdapter listAdapter = new TodosAdapter(tasks, this, listViewTasks);
         listViewTasks.setAdapter(listAdapter);
         listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
     }

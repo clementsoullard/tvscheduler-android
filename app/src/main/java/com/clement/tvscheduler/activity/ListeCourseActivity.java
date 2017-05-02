@@ -29,7 +29,7 @@ import java.util.List;
 
 public class ListeCourseActivity extends AppCompatActivity implements ConnectedActivityI {
 
-    public final static String TAG = "MainActivity";
+    public final static String TAG = "TvPcActivity";
 
     private ListView listViewAchats;
     /**

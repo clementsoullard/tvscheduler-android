@@ -4,39 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.clement.tvscheduler.activity.MainActivity"
-    tools:showIn="@layout/activity_main"
+    tools:context="com.clement.tvscheduler.activity.TvPcActivity"
 
-    android:background="@color/white">
+    tools:showIn="@layout/activity_main">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
-            android:textAlignment="center"
-                  android:id="@+id/title"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:text="Surveillance Télé"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
         <LinearLayout
-            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_on"
-                android:layout_gravity="center_horizontal"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/greenButton"
                 android:text="ON" />
 
@@ -60,6 +62,30 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/greenButton"
                 android:text="60 Mn" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_onpc"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/greenButton"
+                android:text="ON PC" />
+
+            <Button
+                android:id="@+id/button_offpc"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/redButton"
+                android:text="OFF PC" />
+
 
         </LinearLayout>
 
@@ -95,11 +121,12 @@
             android:id="@+id/remainingTime_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-                android:text="-"
+            android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
         <TextView
             android:id="@+id/tvStatus_view"
-          android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -107,15 +134,15 @@
         <TextView
             android:id="@+id/relayStatus_view"
             android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+            android:layout_height="wrap_content"
             android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/nextCredit_view"
             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-           android:text="-"
+            android:layout_height="wrap_content"
+            android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -124,21 +151,23 @@
             android:layout_height="wrap_content"
             android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tâches du jour"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <ListView android:id="@+id/listTodos"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"></ListView>
+        <ListView
+            android:id="@+id/listTodos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
+
         <TextView
             android:id="@+id/empty_todos_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rien à faire"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 </RelativeLayout>

@@ -1,8 +1,9 @@
-package com.clement.tvscheduler.task;
+package com.clement.tvscheduler.task.tvpc;
 
 import android.util.Log;
 
-import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TvPcActivity;
+import com.clement.tvscheduler.task.BaseTask;
 
 import java.net.HttpURLConnection;
 
@@ -21,8 +22,8 @@ public class CreditTask extends BaseTask {
      *
      */
 
-    public CreditTask(MainActivity mainActivity, Integer credit) {
-        super(mainActivity);
+    public CreditTask(TvPcActivity tvPcActivity, Integer credit) {
+        super(tvPcActivity);
           this.credit = credit;
     }
 
@@ -34,7 +35,7 @@ public class CreditTask extends BaseTask {
             messageRetour = "Succès";
             return 0L;
         } catch (Exception e) {
-            Log.e(MainActivity.TAG, "Erreur " + e.getMessage());
+            Log.e(TvPcActivity.TAG, "Erreur " + e.getMessage());
         }
         messageRetour = "Service non disponible";
         return null;

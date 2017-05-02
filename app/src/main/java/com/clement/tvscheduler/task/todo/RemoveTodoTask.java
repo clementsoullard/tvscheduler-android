@@ -2,7 +2,7 @@ package com.clement.tvscheduler.task.todo;
 
 import android.util.Log;
 
-import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TvPcActivity;
 import com.clement.tvscheduler.activity.TaskListActivityI;
 import com.clement.tvscheduler.task.BaseTask;
 
@@ -50,7 +50,7 @@ public class RemoveTodoTask extends BaseTask {
             }
             return 0L;
         } catch (Exception e) {
-            Log.e(MainActivity.TAG, "Erreur " + e.getMessage());
+            Log.e(TvPcActivity.TAG, "Erreur " + e.getMessage());
         }
         messageRetour = "Service non disponible";
         return null;

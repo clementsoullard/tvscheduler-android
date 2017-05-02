@@ -1,8 +1,7 @@
-package com.clement.tvscheduler.task.achat;
+package com.clement.tvscheduler.task.tvpc;
 
 import android.util.Log;
 
-import com.clement.tvscheduler.activity.ListeCourseActivity;
 import com.clement.tvscheduler.activity.TvPcActivity;
 import com.clement.tvscheduler.task.BaseTask;
 
@@ -11,30 +10,28 @@ import java.net.HttpURLConnection;
 /**
  * Created by Clément on 09/07/2016.
  */
-public class EndAchatTask extends BaseTask {
+public class ChangeLoginAuthorizationTask extends BaseTask {
 
 
     private String messageRetour;
 
-    private ListeCourseActivity listeCourseActivity;
+    private Boolean enable;
 
     /**
      *
      *
      */
 
-    public EndAchatTask(ListeCourseActivity listCourseActivity) {
-        super(listCourseActivity);
-        this.listeCourseActivity = listCourseActivity;
+    public ChangeLoginAuthorizationTask(TvPcActivity tvPcActivity, Boolean enable) {
+        super(tvPcActivity);
+        this.enable = enable;
     }
 
     @Override
     protected Long doInBackground(Integer... params) {
         try {
-            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/ws-finish-achat");
-            urlConnection.setRequestMethod("GET");
+            HttpURLConnection urlConnection = getHttpUrlConnection("tvscheduler/pc-activate/" + enable);
             urlConnection.getContent();
-            int responseCode = urlConnection.getResponseCode();
             messageRetour = "Succès";
             return 0L;
         } catch (Exception e) {
@@ -48,6 +45,5 @@ public class EndAchatTask extends BaseTask {
     @Override
     protected void onPostExecute(Long aLong) {
         connectedActivity.showMessage(messageRetour);
-        listeCourseActivity.achatTermine();
     }
 }

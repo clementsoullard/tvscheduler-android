@@ -3,7 +3,7 @@ package com.clement.tvscheduler.task.achat;
 import android.util.Log;
 
 import com.clement.tvscheduler.activity.ListeCourseActivity;
-import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TvPcActivity;
 import com.clement.tvscheduler.object.Achat;
 import com.clement.tvscheduler.task.BaseTask;
 
@@ -60,14 +60,14 @@ public class UpdateAchatTask extends BaseTask {
 
 
             if (responseCode == HttpsURLConnection.HTTP_NO_CONTENT) {
-                Log.i(MainActivity.TAG, "14 - HTTP_OK pour id " + achat.getId());
+                Log.i(TvPcActivity.TAG, "14 - HTTP_OK pour id " + achat.getId());
             } else {
-                Log.e(MainActivity.TAG, "Retour " + responseCode);
+                Log.e(TvPcActivity.TAG, "Retour " + responseCode);
                 messageRetour = "Service non disponible";
             }
             return 0L;
         } catch (Exception e) {
-            Log.e(MainActivity.TAG, e.getMessage(), e);
+            Log.e(TvPcActivity.TAG, e.getMessage(), e);
         }
         messageRetour = "Service non disponible";
         return null;

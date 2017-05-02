@@ -6,6 +6,18 @@ import java.util.Date;
  * Created by Clément on 17/07/2016.
  */
 public class TVStatus {
+    public static final String TIME_CONSUMED_TODAY = "timeConsumedToday";
+
+    public static final String DATE_OF_CREDIT = "dateOfCredit";
+
+    public static final String RELAY_STATUS = "relayStatus";
+
+    public static final String ACTIVE_STANDBY_STATE = "activeStandbyState";
+
+    public static final String AMOUNT_OF_CREDIT_IN_MINUTES = "amountOfCreditInMinutes";
+
+    public static final String REMAINING_TIME = "remainingTime";
+
 
     private Boolean statusRelay;
 

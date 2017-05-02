@@ -1,8 +1,9 @@
-package com.clement.tvscheduler.task;
+package com.clement.tvscheduler.task.tvpc;
 
 import android.util.Log;
 
-import com.clement.tvscheduler.activity.MainActivity;
+import com.clement.tvscheduler.activity.TvPcActivity;
+import com.clement.tvscheduler.task.BaseTask;
 
 import org.json.JSONObject;
 
@@ -24,8 +25,8 @@ public class PunitionTask extends BaseTask {
     private Integer punition;
 
 
-    public PunitionTask(MainActivity mainActivity,Integer punition) {
-        super(mainActivity);
+    public PunitionTask(TvPcActivity tvPcActivity, Integer punition) {
+        super(tvPcActivity);
         this.punition=punition;
 
     }
@@ -58,14 +59,14 @@ public class PunitionTask extends BaseTask {
 
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
-                Log.e(MainActivity.TAG, "14 - HTTP_OK");
+                Log.e(TvPcActivity.TAG, "14 - HTTP_OK");
             } else {
-                Log.e(MainActivity.TAG, responseCode + "  - False - HTTP_OK");
+                Log.e(TvPcActivity.TAG, responseCode + "  - False - HTTP_OK");
                 messageRetour = "Service non disponible";
             }
             return 0L;
         } catch (Exception e) {
-            Log.e(MainActivity.TAG, e.getMessage(), e);
+            Log.e(TvPcActivity.TAG, e.getMessage(), e);
         }
         messageRetour = "Service non disponible";
         return null;

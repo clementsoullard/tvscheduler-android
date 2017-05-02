@@ -5,13 +5,15 @@ import java.util.Date;
 /**
  * Created by cleme on 29/10/2016.
  */
-public class Todo {
+public class Task {
 
     private String name;
 
     private String id;
 
     private Boolean done;
+
+    private Boolean permanent;
 
     private String owner;
 
@@ -30,6 +32,17 @@ public class Todo {
         }
         return done;
     }
+
+    public void setPermanent(Boolean permanent) {
+        this.permanent = permanent;
+    }
+
+    public Boolean getPermanent() {
+        if (permanent == null) {
+            return false;
+        }
+        return permanent;
+   }
 
     public String getName() {
         return name;

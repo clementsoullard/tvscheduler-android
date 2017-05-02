@@ -1,6 +1,6 @@
 package com.clement.tvscheduler.activity;
 
-import com.clement.tvscheduler.object.Todo;
+import com.clement.tvscheduler.object.Task;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface TaskListActivityI extends ConnectedActivityI {
 
     void refreshTaskList();
 
-    void setTodos(List<Todo> todos);
+    void setTodos(List<Task> tasks);
 
 }
 
