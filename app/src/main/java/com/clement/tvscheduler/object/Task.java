@@ -13,7 +13,7 @@ public class Task {
 
     private Boolean done;
 
-    private Boolean permanent;
+    private Boolean temporary;
 
     private String owner;
 
@@ -33,16 +33,16 @@ public class Task {
         return done;
     }
 
-    public void setPermanent(Boolean permanent) {
-        this.permanent = permanent;
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
     }
 
-    public Boolean getPermanent() {
-        if (permanent == null) {
+    public Boolean getTemporary() {
+        if (temporary == null) {
             return false;
         }
-        return permanent;
-   }
+        return temporary;
+    }
 
     public String getName() {
         return name;

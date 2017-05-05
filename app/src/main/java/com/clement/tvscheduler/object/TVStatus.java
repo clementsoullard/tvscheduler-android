@@ -18,12 +18,16 @@ public class TVStatus {
 
     public static final String REMAINING_TIME = "remainingTime";
 
+    public static final String CURRENT_LOGGED_USER = "currentLoggedUser";
+
 
     private Boolean statusRelay;
 
     private String remainingTime;
 
     private String consumedToday;
+
+    private String connectedUser;
 
     private Date nextCreditOn;
 
@@ -77,5 +81,13 @@ public class TVStatus {
 
     public void setActiveTV(Boolean activeTV) {
         this.activeTV = activeTV;
+    }
+
+    public String getConnectedUser() {
+        return connectedUser;
+    }
+
+    public void setConnectedUser(String connectedUser) {
+        this.connectedUser = connectedUser;
     }
 }

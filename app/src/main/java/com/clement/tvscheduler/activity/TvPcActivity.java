@@ -20,16 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clement.tvscheduler.R;
-import com.clement.tvscheduler.activity.adapter.TodosAdapter;
+import com.clement.tvscheduler.activity.adapter.TasksAdapter;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.tvpc.ChangeLoginAuthorizationTask;
 import com.clement.tvscheduler.task.tvpc.CreditTask;
-import com.clement.tvscheduler.task.todo.ListTodoTask;
+import com.clement.tvscheduler.task.task.ListTodoTask;
 import com.clement.tvscheduler.task.tvpc.PunitionTask;
 import com.clement.tvscheduler.task.tvpc.TVStatusTask;
 import com.clement.tvscheduler.object.Task;
-import com.clement.tvscheduler.task.todo.RemoveTodoTask;
+import com.clement.tvscheduler.task.task.RemoveTodoTask;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -42,7 +42,7 @@ import java.util.TimeZone;
 /**
  * The main display containing the essential feature to display
  */
-public class TvPcActivity extends AppCompatActivity implements TaskListActivityI {
+public class TvPcActivity extends AppCompatActivity implements ConnectedActivityI {
 
     public final static String TAG = "TvPcActivity";
 
@@ -80,11 +80,13 @@ public class TvPcActivity extends AppCompatActivity implements TaskListActivityI
 
     private TextView tvStatusView;
 
+    private TextView userConnectedView;
+
     private TextView nextCreditView;
 
     private TextView consumedTodayView;
 
-    private ListView listViewTasks;
+    //  private ListView listViewTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,17 +132,17 @@ public class TvPcActivity extends AppCompatActivity implements TaskListActivityI
         Log.d(TAG, "Passage sur on resume");
         tvStatusTask.execute();
 
-        refreshTaskList();
+        //refreshTaskList();
 
     }
 
     /**
      * Refresh the tasks from the server
      */
-    public void refreshTaskList() {
-        ListTodoTask listTodoTask = new ListTodoTask(this, "César");
-        listTodoTask.execute();
-    }
+//    public void refreshTaskList() {
+//        ListTodoTask listTodoTask = new ListTodoTask(this, "César");
+//        listTodoTask.execute();
+//    }
 
     /**
      * Intitialistation des composants
@@ -158,9 +160,10 @@ public class TvPcActivity extends AppCompatActivity implements TaskListActivityI
         remainingTimeView = (TextView) findViewById(R.id.remainingTime_view);
         relayStatusView = (TextView) findViewById(R.id.relayStatus_view);
         nextCreditView = (TextView) findViewById(R.id.nextCredit_view);
+        userConnectedView = (TextView) findViewById(R.id.connectedUser_view);
         consumedTodayView = (TextView) findViewById(R.id.consumedToday_view);
         tvStatusView = (TextView) findViewById(R.id.tvStatus_view);
-        listViewTasks = (ListView) findViewById(R.id.listTodos);
+        //  listViewTasks = (ListView) findViewById(R.id.listTodos);
 
         tvOn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,6 +265,10 @@ public class TvPcActivity extends AppCompatActivity implements TaskListActivityI
         nextCreditView.setText(numberOfMinutes.toString() + "mn credite le " + datFormatSimple.format(nextCredit));
     }
 
+    public void setConnectedUser(String connectedUser) {
+        userConnectedView.setText(connectedUser);
+    }
+
     public void setTvStatus(String tvStatus) {
         tvStatusView.setText(tvStatus);
     }
@@ -338,31 +345,12 @@ public class TvPcActivity extends AppCompatActivity implements TaskListActivityI
     }
 
 
-    public void setTodos(List<Task> tasks) {
+//    public void setTodos(List<Task> tasks) {
+//
+//        ListAdapter listAdapter = new TasksAdapter(tasks, TvPcActivity.this, listViewTasks);
+//        listViewTasks.setAdapter(listAdapter);
+//        listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
+//    }
 
-        ListAdapter listAdapter = new TodosAdapter(tasks, TvPcActivity.this, listViewTasks);
-        listViewTasks.setAdapter(listAdapter);
-        listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
-    }
-
-    /**
-     * This asks a confirmation before removing an item
-     *
-     * @param taskId
-     * @param achatName
-     */
-    public void askConfirmationBeforeRemoving(final String taskId, String achatName) {
-        AlertDialog alert = new AlertDialog.Builder(this)
-                .setTitle("Confirmation")
-                .setMessage("Etes vous sur de vouloir supprimer " + achatName + " ?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        RemoveTodoTask removeAchatTask = new RemoveTodoTask(TvPcActivity.this, taskId);
-                        removeAchatTask.execute();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, null).show();
-    }
 
 }

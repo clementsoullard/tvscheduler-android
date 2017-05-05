@@ -63,6 +63,9 @@ public class TVStatusTask extends BaseTask {
             if (tvStatus.getConsumedToday() != null) {
                 tvPcActivity.setConsumedToday(tvStatus.getConsumedToday());
             }
+            if (tvStatus.getConnectedUser() != null) {
+                tvPcActivity.setConnectedUser("Utilisateur connecté "+tvStatus.getConnectedUser().replaceAll("DESKTOP-BUREAU\\\\\\\\", ""));
+            }
             if (tvStatus.getActiveTV()) {
                 tvPcActivity.setTvStatus("La télé est ON");
             } else {
@@ -107,6 +110,7 @@ public class TVStatusTask extends BaseTask {
         Date nextCredit = null;
         Integer nextAmount = null;
         String timeToday = "-";
+        String currentLoggedUser = "-";
         Boolean relayStatus = false;
         Boolean activeTv = false;
 
@@ -132,6 +136,8 @@ public class TVStatusTask extends BaseTask {
                 String minutesInt = reader.nextString();
                 Log.i(TvPcActivity.TAG, "Lecture des minutes " + minutesInt);
                 timeToday = "Minutes consommées: " + minutesInt;
+            } else if (name.equals(TVStatus.CURRENT_LOGGED_USER)) {
+                currentLoggedUser = reader.nextString();
             } else if (name.equals(TVStatus.AMOUNT_OF_CREDIT_IN_MINUTES)) {
                 nextAmount = reader.nextInt();
             } else if (name.equals(TVStatus.ACTIVE_STANDBY_STATE)) {
@@ -146,7 +152,7 @@ public class TVStatusTask extends BaseTask {
         tvStatus.setNextCreditAmount(nextAmount);
         tvStatus.setConsumedToday(timeToday);
         tvStatus.setActiveTV(activeTv);
-
+        tvStatus.setConnectedUser(currentLoggedUser);
         reader.endObject();
         return tvStatus;
     }

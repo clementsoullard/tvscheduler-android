@@ -18,14 +18,14 @@ import com.clement.tvscheduler.TVSchedulerConstants;
 import com.clement.tvscheduler.activity.TvPcActivity;
 import com.clement.tvscheduler.activity.TaskListActivityI;
 import com.clement.tvscheduler.object.Task;
-import com.clement.tvscheduler.task.todo.UpdateTodoTask;
+import com.clement.tvscheduler.task.task.UpdateTodoTask;
 
 import java.util.List;
 
 /**
  * Created by cleme on 30/10/2016.
  */
-public class TodosAdapter implements ListAdapter {
+public class TasksAdapter implements ListAdapter {
 
     private List<Task> tasks;
 
@@ -33,7 +33,7 @@ public class TodosAdapter implements ListAdapter {
 
     private ListView listViewTodos;
 
-    public TodosAdapter(List<Task> tasks, TaskListActivityI mainActivity, ListView parentView) {
+    public TasksAdapter(List<Task> tasks, TaskListActivityI mainActivity, ListView parentView) {
         this.tasks = tasks;
         this.mainActivity = mainActivity;
         this.listViewTodos = parentView;
@@ -89,7 +89,7 @@ public class TodosAdapter implements ListAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mainActivity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.todo_item, null);
+            rowView = inflater.inflate(R.layout.task_item, null);
             rowView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -136,8 +136,10 @@ public class TodosAdapter implements ListAdapter {
             rowView = convertView;
         }
 
-        TextView textView = (TextView) rowView.findViewById(R.id.label);
-        textView.setText(tasks.get(position).getName());
+        TextView nameTextView = (TextView) rowView.findViewById(R.id.taskLabel);
+        TextView ownerTextView = (TextView) rowView.findViewById(R.id.taskOwner);
+        nameTextView.setText(tasks.get(position).getName());
+        ownerTextView.setText(tasks.get(position).getOwner());
         final Task task = tasks.get(position);
         final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
         checkBox.setChecked(task.getDone());

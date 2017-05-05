@@ -81,6 +81,10 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
         }
     }
 
+    /**
+     * Return the url depending on the location (internet or LAN)
+     * @return
+     */
     protected String getBaseURL() {
         ConnectivityManager cm = (ConnectivityManager) connectedActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();

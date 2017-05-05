@@ -1,9 +1,7 @@
 package com.clement.tvscheduler.activity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +17,11 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 
 import com.clement.tvscheduler.R;
-import com.clement.tvscheduler.activity.adapter.TodosAdapter;
+import com.clement.tvscheduler.activity.adapter.TasksAdapter;
 import com.clement.tvscheduler.object.Task;
-import com.clement.tvscheduler.task.todo.AddTodoTask;
-import com.clement.tvscheduler.task.todo.ListTodoTask;
-import com.clement.tvscheduler.task.todo.RemoveTodoTask;
+import com.clement.tvscheduler.task.task.AddTodoTask;
+import com.clement.tvscheduler.task.task.ListTodoTask;
+import com.clement.tvscheduler.task.task.RemoveTodoTask;
 
 import java.util.List;
 
@@ -40,7 +38,7 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
 
     private RadioGroup radioGrouOwner;
 
-    private CheckBox checkBoxPermanent;
+    private CheckBox checkBoxTemporary;
 
 
     @Override
@@ -92,7 +90,7 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
             public void onClick(View v) {
                 Task task = new Task();
                 task.setName(todoAjoutEdt.getText().toString());
-                task.setPermanent(checkBoxPermanent.isChecked());
+                task.setTemporary(checkBoxTemporary.isChecked());
                 Integer idSelectedOwned = radioGrouOwner.getCheckedRadioButtonId();
                 if (idSelectedOwned == R.id.idCesarRadio) {
                     task.setOwner("César");
@@ -109,20 +107,26 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
 
         listViewTasks = (ListView) findViewById(R.id.listTasks);
         radioGrouOwner = (RadioGroup) findViewById(R.id.idOwnerRadioGroup);
-        checkBoxPermanent = (CheckBox) findViewById(R.id.checkboxPermanennt);
+        radioGrouOwner.check(R.id.idHomeRadio);
+        checkBoxTemporary = (CheckBox) findViewById(R.id.checkboxTemporary);
 
     }
 
-
-    public void todoEnregistre() {
+    /**
+     * Action to be performed after a task is saved.
+     */
+    public void taskEnregistre() {
         todoAjoutEdt.setText("");
-        Intent upIntent = NavUtils.getParentActivityIntent(this);
-        NavUtils.navigateUpTo(this, upIntent);
+        radioGrouOwner.check(R.id.idHomeRadio);
+        checkBoxTemporary.setChecked(false);
+        refreshTaskList();
+        //  Intent upIntent = NavUtils.getParentActivityIntent(this);
+        //  NavUtils.navigateUpTo(this, upIntent);
 
     }
 
     public void setTasks(List<Task> tasks) {
-        ListAdapter listAdapter = new TodosAdapter(tasks, this, listViewTasks);
+        ListAdapter listAdapter = new TasksAdapter(tasks, this, listViewTasks);
         listViewTasks.setAdapter(listAdapter);
         listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
     }
@@ -150,13 +154,13 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
 
     @Override
     public void refreshTaskList() {
-        ListTodoTask listTodoTask = new ListTodoTask(this, "home");
+        ListTodoTask listTodoTask = new ListTodoTask(this);
         listTodoTask.execute();
     }
 
     @Override
     public void setTodos(List<Task> tasks) {
-        ListAdapter listAdapter = new TodosAdapter(tasks, this, listViewTasks);
+        ListAdapter listAdapter = new TasksAdapter(tasks, this, listViewTasks);
         listViewTasks.setAdapter(listAdapter);
         listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
     }

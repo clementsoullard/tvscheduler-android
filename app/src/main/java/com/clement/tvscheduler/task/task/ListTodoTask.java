@@ -1,4 +1,4 @@
-package com.clement.tvscheduler.task.todo;
+package com.clement.tvscheduler.task.task;
 
 import android.util.JsonReader;
 import android.util.JsonToken;
@@ -25,12 +25,12 @@ public class ListTodoTask extends BaseTask {
     private List<Task> tasks;
     private String messageRetour;
     private TaskListActivityI taskListActivity;
-    private String taskOwner;
+   // private String taskOwner;
 
-    public ListTodoTask(TaskListActivityI mainActivity, String taskOwner) {
+    public ListTodoTask(TaskListActivityI mainActivity) {
         super(mainActivity);
         this.taskListActivity = mainActivity;
-        this.taskOwner = taskOwner;
+     //   this.taskOwner = taskOwner;
     }
 
     @Override
@@ -38,9 +38,9 @@ public class ListTodoTask extends BaseTask {
         try {
             Log.i(TvPcActivity.TAG, "Execution " + this.getClass());
             String uri = "/tvscheduler/today-tasks";
-            if (taskOwner.equals("home")) {
-                uri += "-home";
-            }
+//            if (taskOwner.equals("home")) {
+  //              uri += "-home";
+    //        }
             InputStream is = getHttpUrlConnection(uri).getInputStream();
             readJsonStream(is);
             messageRetour = "Succès";
@@ -135,6 +135,7 @@ public class ListTodoTask extends BaseTask {
         reader.endObject();
         task.setDone(done);
         task.setName(name);
+        task.setOwner(owner);
         task.setId(id);
 
         return task;

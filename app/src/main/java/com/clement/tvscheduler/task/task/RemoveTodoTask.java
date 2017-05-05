@@ -1,4 +1,4 @@
-package com.clement.tvscheduler.task.todo;
+package com.clement.tvscheduler.task.task;
 
 import android.util.Log;
 
