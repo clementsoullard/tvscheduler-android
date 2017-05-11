@@ -128,7 +128,7 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
     public void setTasks(List<Task> tasks) {
         ListAdapter listAdapter = new TasksAdapter(tasks, this, listViewTasks);
         listViewTasks.setAdapter(listAdapter);
-        listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
+        listViewTasks.setEmptyView(findViewById(R.id.empty_tasks_view));
     }
 
     @Override
@@ -162,6 +162,6 @@ public class TasksActivity extends AppCompatActivity implements ConnectedActivit
     public void setTodos(List<Task> tasks) {
         ListAdapter listAdapter = new TasksAdapter(tasks, this, listViewTasks);
         listViewTasks.setAdapter(listAdapter);
-        listViewTasks.setEmptyView(findViewById(R.id.empty_todos_view));
+        listViewTasks.setEmptyView(findViewById(R.id.empty_tasks_view));
     }
 }

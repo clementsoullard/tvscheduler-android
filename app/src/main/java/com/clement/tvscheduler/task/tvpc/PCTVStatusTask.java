@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * Created by Clément on 09/07/2016.
  */
-public class TVStatusTask extends BaseTask {
+public class PCTVStatusTask extends BaseTask {
 
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     TVStatus tvStatus;
@@ -25,8 +25,7 @@ public class TVStatusTask extends BaseTask {
 
     TvPcActivity tvPcActivity;
 
-    public TVStatusTask(TvPcActivity tvPcActivity) {
-
+    public PCTVStatusTask(TvPcActivity tvPcActivity) {
         super(tvPcActivity);
         this.tvPcActivity = tvPcActivity;
     }
@@ -60,11 +59,14 @@ public class TVStatusTask extends BaseTask {
             if (tvStatus.getNextCreditOn() != null) {
                 tvPcActivity.setNextCredit(tvStatus.getNextCreditOn(), tvStatus.getNextCreditAmount());
             }
-            if (tvStatus.getConsumedToday() != null) {
-                tvPcActivity.setConsumedToday(tvStatus.getConsumedToday());
+            if (tvStatus.getTvConsumedToday() != null) {
+                tvPcActivity.setConsumedToday(tvStatus.getTvConsumedToday());
+            }
+            if (tvStatus.getTimePcConsumedToday() != null) {
+                tvPcActivity.setConsumedPcToday(tvStatus.getTimePcConsumedToday());
             }
             if (tvStatus.getConnectedUser() != null) {
-                tvPcActivity.setConnectedUser("Utilisateur connecté "+tvStatus.getConnectedUser().replaceAll("DESKTOP-BUREAU\\\\\\\\", ""));
+                tvPcActivity.setConnectedUser("Utilisateur connecté " + tvStatus.getConnectedUser().replaceAll("DESKTOP-BUREAU\\\\\\\\", ""));
             }
             if (tvStatus.getActiveTV()) {
                 tvPcActivity.setTvStatus("La télé est ON");
@@ -109,7 +111,8 @@ public class TVStatusTask extends BaseTask {
         String remainingTime = null;
         Date nextCredit = null;
         Integer nextAmount = null;
-        String timeToday = "-";
+        String timeTvToday = "-";
+        String timePCToday = "-";
         String currentLoggedUser = "-";
         Boolean relayStatus = false;
         Boolean activeTv = false;
@@ -134,8 +137,10 @@ public class TVStatusTask extends BaseTask {
                 }
             } else if (name.equals(TVStatus.TIME_CONSUMED_TODAY)) {
                 String minutesInt = reader.nextString();
-                Log.i(TvPcActivity.TAG, "Lecture des minutes " + minutesInt);
-                timeToday = "Minutes consommées: " + minutesInt;
+                timeTvToday = "Minutes consommées: " + minutesInt;
+            } else if (name.equals(TVStatus.TIME_PC_CONSUMED_TODAY)) {
+                String minutesInt = reader.nextString();
+                timePCToday = "Minutes consommées: " + minutesInt;
             } else if (name.equals(TVStatus.CURRENT_LOGGED_USER)) {
                 currentLoggedUser = reader.nextString();
             } else if (name.equals(TVStatus.AMOUNT_OF_CREDIT_IN_MINUTES)) {
@@ -150,7 +155,8 @@ public class TVStatusTask extends BaseTask {
         tvStatus.setStatusRelay(relayStatus);
         tvStatus.setNextCreditOn(nextCredit);
         tvStatus.setNextCreditAmount(nextAmount);
-        tvStatus.setConsumedToday(timeToday);
+        tvStatus.setTvConsumedToday(timeTvToday);
+        tvStatus.setTimePcConsumedToday(timePCToday);
         tvStatus.setActiveTV(activeTv);
         tvStatus.setConnectedUser(currentLoggedUser);
         reader.endObject();

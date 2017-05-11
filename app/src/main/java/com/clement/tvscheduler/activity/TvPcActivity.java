@@ -1,11 +1,9 @@
 package com.clement.tvscheduler.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,28 +12,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clement.tvscheduler.R;
-import com.clement.tvscheduler.activity.adapter.TasksAdapter;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.tvpc.ChangeLoginAuthorizationTask;
 import com.clement.tvscheduler.task.tvpc.CreditTask;
-import com.clement.tvscheduler.task.task.ListTodoTask;
 import com.clement.tvscheduler.task.tvpc.PunitionTask;
-import com.clement.tvscheduler.task.tvpc.TVStatusTask;
-import com.clement.tvscheduler.object.Task;
-import com.clement.tvscheduler.task.task.RemoveTodoTask;
+import com.clement.tvscheduler.task.tvpc.PCTVStatusTask;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -86,6 +77,8 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
 
     private TextView consumedTodayView;
 
+    private TextView consumedPcTodayView;
+
     //  private ListView listViewTasks;
 
     @Override
@@ -93,7 +86,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        TVStatusTask tvStatusTask = new TVStatusTask(this);
+        PCTVStatusTask PCTVStatusTask = new PCTVStatusTask(this);
         Log.d(TAG, "Passage sur on create");
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 
@@ -104,7 +97,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         myToolbar.setSubtitle("Pour enfants gentils et méchants");
         setSupportActionBar(myToolbar);
         //  Cheecking tasks
-        tvStatusTask.execute();
+        PCTVStatusTask.execute();
     }
 
     @Override
@@ -128,9 +121,9 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
     @Override
     protected void onResume() {
         super.onResume();
-        TVStatusTask tvStatusTask = new TVStatusTask(this);
+        PCTVStatusTask PCTVStatusTask = new PCTVStatusTask(this);
         Log.d(TAG, "Passage sur on resume");
-        tvStatusTask.execute();
+        PCTVStatusTask.execute();
 
         //refreshTaskList();
 
@@ -162,6 +155,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         nextCreditView = (TextView) findViewById(R.id.nextCredit_view);
         userConnectedView = (TextView) findViewById(R.id.connectedUser_view);
         consumedTodayView = (TextView) findViewById(R.id.consumedToday_view);
+        consumedPcTodayView = (TextView) findViewById(R.id.consumedPcToday_view);
         tvStatusView = (TextView) findViewById(R.id.tvStatus_view);
         //  listViewTasks = (ListView) findViewById(R.id.listTodos);
 
@@ -257,8 +251,11 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         relayStatusView.setText(relayStatus);
     }
 
-    public void setConsumedToday(String relayStatus) {
-        consumedTodayView.setText(relayStatus);
+    public void setConsumedToday(String consumedTvToday) {
+        consumedTodayView.setText(consumedTvToday);
+    }
+    public void setConsumedPcToday(String consumedPcToday) {
+        consumedPcTodayView.setText(consumedPcToday);
     }
 
     public void setNextCredit(Date nextCredit, Integer numberOfMinutes) {

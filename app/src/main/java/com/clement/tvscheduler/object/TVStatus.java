@@ -8,6 +8,8 @@ import java.util.Date;
 public class TVStatus {
     public static final String TIME_CONSUMED_TODAY = "timeConsumedToday";
 
+    public static final String TIME_PC_CONSUMED_TODAY = "timePcConsumedToday";
+
     public static final String DATE_OF_CREDIT = "dateOfCredit";
 
     public static final String RELAY_STATUS = "relayStatus";
@@ -25,7 +27,9 @@ public class TVStatus {
 
     private String remainingTime;
 
-    private String consumedToday;
+    private String consumedTvToday;
+
+    private String timePcConsumedToday;
 
     private String connectedUser;
 
@@ -67,12 +71,12 @@ public class TVStatus {
         this.nextCreditAmount = nextCreditAmount;
     }
 
-    public void setConsumedToday(String consumaedToday) {
-        this.consumedToday = consumaedToday;
+    public void setTvConsumedToday(String consumaedToday) {
+        this.consumedTvToday = consumaedToday;
     }
 
-    public String getConsumedToday() {
-        return consumedToday;
+    public String getTvConsumedToday() {
+        return consumedTvToday;
     }
 
     public Boolean getActiveTV() {
@@ -89,5 +93,13 @@ public class TVStatus {
 
     public void setConnectedUser(String connectedUser) {
         this.connectedUser = connectedUser;
+    }
+
+    public String getTimePcConsumedToday() {
+        return timePcConsumedToday;
+    }
+
+    public void setTimePcConsumedToday(String timePcConsumedToday) {
+        this.timePcConsumedToday = timePcConsumedToday;
     }
 }
