@@ -99,6 +99,14 @@
             android:text="-"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
+        <TextView
+            android:id="@+id/labelPc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Surveillance PC"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
 
 
         <LinearLayout
@@ -116,10 +124,17 @@
 
             <Button
                 android:id="@+id/button_offpc"
-                android:layout_width="70dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/redButton"
                 android:text="OFF PC" />
+
+            <Button
+                android:id="@+id/button_forceDéconnexionPc"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/redButton"
+                android:text="Déconnection" />
 
 
         </LinearLayout>

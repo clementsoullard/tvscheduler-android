@@ -1,6 +1,7 @@
 package com.clement.tvscheduler.task.tvpc;
 
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.Log;
 
 import com.clement.tvscheduler.activity.TvPcActivity;
@@ -121,34 +122,37 @@ public class PCTVStatusTask extends BaseTask {
         while (reader.hasNext()) {
             String name = reader.nextName();
             Log.i(TvPcActivity.TAG, "Decryptage du TV status entry name " + name);
+            try {
+                if (name.equals(TVStatus.REMAINING_TIME)) {
+                    remainingTime = reader.nextString();
+                } else if (name.equals(TVStatus.RELAY_STATUS)) {
+                    relayStatus = reader.nextBoolean();
+                } else if (name.equals(TVStatus.DATE_OF_CREDIT)) {
+                    String dateInt = reader.nextString();
+                    Log.i(TvPcActivity.TAG, "Lecture de la date " + dateInt);
+                    try {
+                        nextCredit = df.parse(dateInt);
+                    } catch (ParseException e) {
+                        Log.i(TvPcActivity.TAG, e.getMessage(), e);
 
-            if (name.equals(TVStatus.REMAINING_TIME)) {
-                remainingTime = reader.nextString();
-            } else if (name.equals(TVStatus.RELAY_STATUS)) {
-                relayStatus = reader.nextBoolean();
-            } else if (name.equals(TVStatus.DATE_OF_CREDIT)) {
-                String dateInt = reader.nextString();
-                Log.i(TvPcActivity.TAG, "Lecture de la date " + dateInt);
-                try {
-                    nextCredit = df.parse(dateInt);
-                } catch (ParseException e) {
-                    Log.i(TvPcActivity.TAG, e.getMessage(), e);
-
+                    }
+                } else if (name.equals(TVStatus.TIME_CONSUMED_TODAY)) {
+                    String minutesInt = reader.nextString();
+                    timeTvToday = "Minutes consommées: " + minutesInt;
+                } else if (name.equals(TVStatus.TIME_PC_CONSUMED_TODAY)) {
+                    String minutesInt = reader.nextString();
+                    timePCToday = "Minutes consommées: " + minutesInt;
+                } else if (name.equals(TVStatus.CURRENT_LOGGED_USER) && reader.peek() != JsonToken.NULL) {
+                    currentLoggedUser = reader.nextString();
+                } else if (name.equals(TVStatus.AMOUNT_OF_CREDIT_IN_MINUTES)) {
+                    nextAmount = reader.nextInt();
+                } else if (name.equals(TVStatus.ACTIVE_STANDBY_STATE)) {
+                    activeTv = (reader.nextInt() != 1);
+                } else {
+                    reader.skipValue();
                 }
-            } else if (name.equals(TVStatus.TIME_CONSUMED_TODAY)) {
-                String minutesInt = reader.nextString();
-                timeTvToday = "Minutes consommées: " + minutesInt;
-            } else if (name.equals(TVStatus.TIME_PC_CONSUMED_TODAY)) {
-                String minutesInt = reader.nextString();
-                timePCToday = "Minutes consommées: " + minutesInt;
-            } else if (name.equals(TVStatus.CURRENT_LOGGED_USER)) {
-                currentLoggedUser = reader.nextString();
-            } else if (name.equals(TVStatus.AMOUNT_OF_CREDIT_IN_MINUTES)) {
-                nextAmount = reader.nextInt();
-            } else if (name.equals(TVStatus.ACTIVE_STANDBY_STATE)) {
-                activeTv = (reader.nextInt() != 1);
-            } else {
-                reader.skipValue();
+            } catch (Exception e) {
+                Log.e(TvPcActivity.TAG, e.getMessage(), e);
             }
         }
         tvStatus.setRemainingSecond(remainingTime);

@@ -20,6 +20,7 @@ import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
 import com.clement.tvscheduler.task.tvpc.ChangeLoginAuthorizationTask;
 import com.clement.tvscheduler.task.tvpc.CreditTask;
+import com.clement.tvscheduler.task.tvpc.KickOffPCTask;
 import com.clement.tvscheduler.task.tvpc.PunitionTask;
 import com.clement.tvscheduler.task.tvpc.PCTVStatusTask;
 
@@ -51,9 +52,11 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
 
     private Button tvOff;
 
-    private Button tvOnPc;
+    private Button enablePcBtn;
 
-    private Button tvOffPc;
+    private Button disablePCBtn;
+
+    private Button kickOffPcBtn;
 
     private Button tvCredit30;
 
@@ -86,7 +89,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        PCTVStatusTask PCTVStatusTask = new PCTVStatusTask(this);
+     //   PCTVStatusTask PCTVStatusTask = new PCTVStatusTask(this);
         Log.d(TAG, "Passage sur on create");
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 
@@ -97,7 +100,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         myToolbar.setSubtitle("Pour enfants gentils et méchants");
         setSupportActionBar(myToolbar);
         //  Cheecking tasks
-        PCTVStatusTask.execute();
+       // PCTVStatusTask.execute();
     }
 
     @Override
@@ -142,9 +145,10 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
      */
     private void init() {
         tvOn = (Button) findViewById(R.id.button_on);
-        tvOnPc = (Button) findViewById(R.id.button_onpc);
+        enablePcBtn = (Button) findViewById(R.id.button_onpc);
+        kickOffPcBtn = (Button) findViewById(R.id.button_forceDéconnexionPc);
         tvOff = (Button) findViewById(R.id.button_off);
-        tvOffPc = (Button) findViewById(R.id.button_offpc);
+        disablePCBtn = (Button) findViewById(R.id.button_offpc);
         tvCredit30 = (Button) findViewById(R.id.button_30);
         tvCredit60 = (Button) findViewById(R.id.button_60);
         punition = (Button) findViewById(R.id.button_punition);
@@ -174,38 +178,40 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
                 creditTv(-1);
             }
         });
-        tvOnPc.setOnClickListener(new View.OnClickListener() {
+        enablePcBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click Enable Pc");
                 enableUser(true);
             }
         });
-        tvOffPc.setOnClickListener(new View.OnClickListener() {
+        kickOffPcBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click diablse");
+                Log.i(TAG, "Click sur kick Off");
+                kickOffConnectedUser();
+            }
+        });
+        disablePCBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 enableUser(false);
             }
         });
         tvCredit30.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click sur TV 30");
                 creditTv(1800);
             }
         });
         tvCredit60.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click sur TV 60");
                 creditTv(3600);
             }
         });
         punition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click sur punition");
                 requestServerPunition(-20);
             }
         });
@@ -254,6 +260,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
     public void setConsumedToday(String consumedTvToday) {
         consumedTodayView.setText(consumedTvToday);
     }
+
     public void setConsumedPcToday(String consumedPcToday) {
         consumedPcTodayView.setText(consumedPcToday);
     }
@@ -289,8 +296,17 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
      */
     void enableUser(boolean enable) {
         int netType;
-        ChangeLoginAuthorizationTask creditTask = new ChangeLoginAuthorizationTask(TvPcActivity.this, enable);
-        enterPin(creditTask);
+        ChangeLoginAuthorizationTask changeLoginAuthorizationTask = new ChangeLoginAuthorizationTask(TvPcActivity.this, enable);
+        enterPin(changeLoginAuthorizationTask);
+    }
+
+    /**
+     * Kick off connected user
+     */
+    void kickOffConnectedUser() {
+        int netType;
+        KickOffPCTask kickOffPCTask = new KickOffPCTask(TvPcActivity.this);
+        enterPin(kickOffPCTask);
     }
 
     @Override
