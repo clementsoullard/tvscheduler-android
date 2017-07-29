@@ -36,7 +36,7 @@ import java.util.TimeZone;
  */
 public class TvPcActivity extends AppCompatActivity implements ConnectedActivityI {
 
-    public final static String TAG = "TvPcActivity";
+    public final static String TAG = "com.clement.TvPcActivity";
 
     public static final DateFormat datFormatSimple;
 
