@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.clement.tvscheduler.TVSchedulerConstants;
+import com.clement.tvscheduler.AppConstants;
 import com.clement.tvscheduler.activity.ConnectedActivityI;
 import com.clement.tvscheduler.activity.TvPcActivity;
 
@@ -94,11 +94,11 @@ public abstract class BaseTask extends AsyncTask<Integer, Integer, Long> {
             Log.i(TvPcActivity.TAG, "Network is ok");
             String extraInfo = info.getExtraInfo();
             if (extraInfo.contains("B1B6")) {
-                return TVSchedulerConstants.HTTP_RESEAU_LOCAL;
+                return AppConstants.HTTP_RESEAU_LOCAL;
             }
         }
         Log.i(TvPcActivity.TAG, " on WAN");
-        return TVSchedulerConstants.HTTP_RESEAU_INET;
+        return AppConstants.HTTP_RESEAU_INET;
 
 
     }

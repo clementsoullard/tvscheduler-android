@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.clement.tvscheduler.AppConstants;
 import com.clement.tvscheduler.R;
 import com.clement.tvscheduler.dialog.PinDialog;
 import com.clement.tvscheduler.task.BaseTask;
@@ -90,55 +91,30 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         setContentView(R.layout.activity_main);
         init();
      //   PCTVStatusTask PCTVStatusTask = new PCTVStatusTask(this);
-        Log.d(TAG, "Passage sur on create");
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+           Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 
         /**
          * Création de la toolbar
          */
         myToolbar.setTitle("Distribaffe");
         myToolbar.setSubtitle("Pour enfants gentils et méchants");
-        setSupportActionBar(myToolbar);
+
         //  Cheecking tasks
        // PCTVStatusTask.execute();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i;
-        switch (item.getItemId()) {
-            case R.id.create_new:
-                i = new Intent(TvPcActivity.this, TasksActivity.class);
-                startActivity(i);
-                return true;
-            case R.id.liste_course:
-                i = new Intent(TvPcActivity.this, ListeCourseActivity.class);
-                startActivity(i);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
         PCTVStatusTask PCTVStatusTask = new PCTVStatusTask(this);
-        Log.d(TAG, "Passage sur on resume");
+        Log.d(AppConstants.DEBUG_TAG, "Passage sur on resume");
         PCTVStatusTask.execute();
 
         //refreshTaskList();
 
     }
 
-    /**
-     * Refresh the tasks from the server
-     */
-//    public void refreshTaskList() {
-//        ListTodoTask listTodoTask = new ListTodoTask(this, "César");
-//        listTodoTask.execute();
-//    }
 
     /**
      * Intitialistation des composants
@@ -166,7 +142,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         tvOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click sur TV ON");
+                Log.i(AppConstants.DEBUG_TAG, "Click sur TV ON");
                 creditTv(-2);
 
             }
@@ -174,7 +150,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         tvOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click sur TV Off");
+                Log.i(AppConstants.DEBUG_TAG, "Click sur TV Off");
                 creditTv(-1);
             }
         });
@@ -187,7 +163,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         kickOffPcBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click sur kick Off");
+                Log.i(AppConstants.DEBUG_TAG, "Click sur kick Off");
                 kickOffConnectedUser();
             }
         });
@@ -218,7 +194,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         prive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click sur punition");
+                Log.i(AppConstants.DEBUG_TAG, "Click sur punition");
                 requestServerPunition(-1000);
 
             }
@@ -227,7 +203,7 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
         recompense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click sur punition");
+                Log.i(AppConstants.DEBUG_TAG, "Click sur punition");
                 requestServerPunition(20);
             }
         });
@@ -350,10 +326,10 @@ public class TvPcActivity extends AppCompatActivity implements ConnectedActivity
     public void checkPin(String midPin, String valueEntered, BaseTask taskToExecuteAfterCorrectPin) {
         String expectedResult = "1" + midPin + "1";
         if (expectedResult.equals(valueEntered)) {
-            Log.i(TAG, "La bonne valeur a ete entree");
+            Log.i(AppConstants.DEBUG_TAG, "La bonne valeur a ete entree");
             taskToExecuteAfterCorrectPin.execute();
         } else {
-            Log.i(TAG, "La mauvaise valeur a ete entree");
+            Log.i(AppConstants.DEBUG_TAG, "La mauvaise valeur a ete entree");
         }
     }
 

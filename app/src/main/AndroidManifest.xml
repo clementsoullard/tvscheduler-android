@@ -24,24 +24,6 @@
         </activity>
 
         <!-- A child of the main activity -->
-        <activity
-            android:name=".activity.TasksActivity"
-            android:label="@string/create_task_activity_child"
-            android:parentActivityName=".activity.TvPcActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.TvPcActivity" />
-        </activity>
-        <activity
-            android:name=".activity.ListeCourseActivity"
-            android:label="@string/liste_courses_activity_child"
-            android:parentActivityName=".activity.TvPcActivity">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.TvPcActivity" />
-        </activity>
     </application>
 
 </manifest>
